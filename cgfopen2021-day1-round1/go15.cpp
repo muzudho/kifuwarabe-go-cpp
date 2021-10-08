@@ -1215,18 +1215,18 @@ void Position::AddMoves(int z, int color, double sec)
 /// <summary>
 /// 原始モンテカルロ探索
 /// </summary>
-const int SEARCH_PRIMITIVE = 0;
+const int kSearchPrimitive = 0;
 
 /// <summary>
 /// UCT探索
 /// </summary>
-const int SEARCH_UCT = 1;
+const int kSearchUct = 1;
 
 /// <summary>
 /// コンピューターの指し手
 /// </summary>
 /// <param name="color">手番の色</param>
-/// <param name="search">探索方法。SEARCH_PRIMITIVE または SEARCH_UCT</param>
+/// <param name="search">探索方法。SEARCH_PRIMITIVE または kSearchUct</param>
 /// <returns>座標</returns>
 int Position::PlayComputerMove(int color, int search)
 {
@@ -1264,7 +1264,8 @@ int Position::PlayComputerMove(int color, int search)
     // 勝ち数をクリアー？
     memset(winner_count, 0, sizeof(winner_count));
 
-    if (search == SEARCH_UCT)
+    // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
+    if (0 == Rand64() % 2) // search == kSearchUct
     {
         // UCTを使ったゲームプレイ
         z = GetBestUct(color);
@@ -1358,11 +1359,11 @@ void Position::Selfplay()
         // 黒番、白番ともにUCT探索
         if (color == 1)
         {
-            search = SEARCH_UCT; //SEARCH_PRIMITIVE;
+            search = kSearchUct; //kSearchPrimitive;
         }
         else
         {
-            search = SEARCH_UCT;
+            search = kSearchUct;
         }
 
         // 次の一手
@@ -1478,7 +1479,8 @@ void GtpLoop()
         // 思考エンジンの名前を返してください
         else if (strstr(sa[0], "name"))
         {
-            SendGtp("= your_program_name\n\n");
+            // your_program_name
+            SendGtp("= kifuwarabe\n\n");
         }
         // 思考エンジンのバージョンを返してください
         else if (strstr(sa[0], "version"))
@@ -1504,7 +1506,7 @@ void GtpLoop()
             if (tolower(sa[1][0]) == 'w')
                 color = 2;
 
-            z = position.PlayComputerMove(color, SEARCH_UCT);
+            z = position.PlayComputerMove(color, kSearchUct);
             SendGtp("= %s\n\n", GetCharZ(z));
         }
         // 石の色と座標を指定しますので、置いてください
