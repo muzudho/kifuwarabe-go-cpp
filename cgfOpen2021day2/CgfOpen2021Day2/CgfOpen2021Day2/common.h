@@ -19,7 +19,7 @@ typedef uint64_t uint64; // Linux
 /// <summary>
 /// n路盤
 /// </summary>
-const int kBoardSize = 9;
+const int kBoardSize = 19;
 
 /// <summary>
 /// 両端に番兵込みの幅
