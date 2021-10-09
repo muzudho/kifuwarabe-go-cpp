@@ -276,3 +276,34 @@ void Position::TakeStone(int tz, int color)
             TakeStone(z, color);
     }
 }
+
+void Position::PrintCriticality()
+{
+    int x, y;
+
+    Prt("criticality\n  ");
+    for (x = 0; x < kBoardSize; x++)
+        Prt("    %c", 'A' + x + (x > 7));
+    Prt("\n");
+    for (y = 0; y < kBoardSize; y++)
+    {
+        Prt("%2d ", kBoardSize - y);
+        for (x = 0; x < kBoardSize; x++)
+        {
+            double crt = GetCriticality(GetZ(x + 1, y + 1));
+            Prt("%5.2f", crt);
+        }
+        Prt("\n");
+    }
+}
+
+double Position::GetCriticality(int z)
+{
+    double all = all_playouts + 1;
+    double v = board_winner[0][z] + board_winner[1][z];
+    double per = v / all;
+    double bp = (double)board_winner[0][z] * winner_count[0] / (all * all);
+    double wp = (double)board_winner[1][z] * winner_count[1] / (all * all);
+    double criticality = (per - (bp + wp));
+    return criticality;
+}

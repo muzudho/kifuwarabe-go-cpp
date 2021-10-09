@@ -110,8 +110,19 @@ public:
 
     void PrintBoard();
     void PrintBoardArea();
+
+    /// <summary>
+    /// 致命さ？
+    /// </summary>
+    /// <param name="z">着手点</param>
+    /// <returns>致命さを表す数？</returns>
     double GetCriticality(int z);
+
+    /// <summary>
+    /// 致命さをエラー出力へ出力？
+    /// </summary>
     void PrintCriticality();
+
     void CountLibertySub(int tz, int color, int *p_liberty, int *p_stone);
     void CountLiberty(int tz, int *p_liberty, int *p_stone);
 

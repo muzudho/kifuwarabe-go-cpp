@@ -61,45 +61,6 @@ void Position::PrintBoardArea()
 }
 
 /// <summary>
-/// 致命さ？
-/// </summary>
-/// <param name="z">着手点</param>
-/// <returns>致命さを表す数？</returns>
-double Position::GetCriticality(int z)
-{
-    double all = all_playouts + 1;
-    double v = board_winner[0][z] + board_winner[1][z];
-    double per = v / all;
-    double bp = (double)board_winner[0][z] * winner_count[0] / (all * all);
-    double wp = (double)board_winner[1][z] * winner_count[1] / (all * all);
-    double criticality = (per - (bp + wp));
-    return criticality;
-}
-
-/// <summary>
-/// 致命さをエラー出力へ出力？
-/// </summary>
-void Position::PrintCriticality()
-{
-    int x, y;
-
-    Prt("criticality\n  ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("    %c", 'A' + x + (x > 7));
-    Prt("\n");
-    for (y = 0; y < kBoardSize; y++)
-    {
-        Prt("%2d ", kBoardSize - y);
-        for (x = 0; x < kBoardSize; x++)
-        {
-            double crt = GetCriticality(GetZ(x + 1, y + 1));
-            Prt("%5.2f", crt);
-        }
-        Prt("\n");
-    }
-}
-
-/// <summary>
 /// count_liberty関数の中で呼び出されます。再帰
 /// </summary>
 /// <param name="tz">着手（開始）座標</param>
