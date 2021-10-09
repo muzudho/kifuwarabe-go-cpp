@@ -1,4 +1,4 @@
-#include "node.h"
+﻿#include "node.h"
 
 /// <summary>
 /// リストの末尾に要素を追加。手を追加。

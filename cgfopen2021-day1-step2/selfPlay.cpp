@@ -1,4 +1,4 @@
-#include "selfPlay.h"
+﻿#include "selfPlay.h"
 
 void Selfplay(Position position, UpperConfidenceTree uct)
 {

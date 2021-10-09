@@ -1,4 +1,4 @@
-#include "position.h"
+﻿#include "position.h"
 
 /// <summary>
 /// 盤の初期化

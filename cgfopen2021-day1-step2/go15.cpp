@@ -1,4 +1,4 @@
-// sprintf is Err in VC++
+﻿// sprintf is Err in VC++
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "go15.h"

@@ -1,4 +1,4 @@
-#include "hashCode.h"
+﻿#include "hashCode.h"
 
 void HashCode::MakeHashboard()
 {

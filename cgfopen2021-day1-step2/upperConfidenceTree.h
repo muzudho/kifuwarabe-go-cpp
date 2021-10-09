@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <stdlib.h> // rand()
 #include <string.h> // memset()
@@ -76,4 +76,12 @@ public:
     /// <param name="color">手番の色</param>
     /// <returns>ノードのリストのインデックス。選択した子ノードを指します</returns>
     int SelectBestUcb(int node_n, int color);
+
+    /// <summary>
+    /// 一番良く打たれた一手の座標を返します。
+    /// 手番で１回だけ呼び出されます
+    /// </summary>
+    /// <param name="color">手番の色</param>
+    /// <returns>一番良く打たれた一手の座標</returns>
+    int GetBestUct(Position position, int color);
 };

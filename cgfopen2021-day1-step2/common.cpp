@@ -1,4 +1,4 @@
-#include "common.h"
+﻿#include "common.h"
 
 int GetZ(int x, int y)
 {

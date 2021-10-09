@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "go15.h"
 #include "position.h"
