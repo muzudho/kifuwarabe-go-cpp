@@ -1,21 +1,8 @@
 #pragma once
 
+#include "common.h"
+#include "hashCode.h"
 #include "go15.h"
-
-/// <summary>
-/// n路盤
-/// </summary>
-const int kBoardSize = 9;
-
-/// <summary>
-/// 両端に番兵込みの幅
-/// </summary>
-const int kWidth = (kBoardSize + 2);
-
-/// <summary>
-/// 番兵込みの盤の面積
-/// </summary>
-const int kBoardMax = (kWidth * kWidth);
 
 /// <summary>
 /// 右、下、左、上
@@ -115,6 +102,12 @@ public:
     /// </summary>
     int check_board[kBoardMax];
 
+    class HashCode hashCode;
+
+    Position() {
+        hashCode = HashCode();
+    }
+
     void PrintBoard();
     void PrintBoardArea();
     double GetCriticality(int z);
@@ -129,7 +122,14 @@ public:
     double CountTotalTime();
     int GetBestUct(int color);
     void InitBoard();
+
+    /// <summary>
+    /// 指し手を棋譜に記入
+    /// </summary>
+    /// <param name="z">座標</param>
+    /// <param name="color">手番の色</param>
     void AddMoves(int z, int color, double sec);
+
     int PlayComputerMove(int color, int search);
     void PrintSgf();
 };

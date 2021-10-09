@@ -1,5 +1,6 @@
 #include "common.h"
 #include "position.h"
+#include <stdlib.h>
 
 /// <summary>
 /// 盤の描画
@@ -48,4 +49,32 @@ void Position::PrintBoard()
 
         Prt("\n");
     }
+}
+
+void Position::AddMoves(int z, int color, double sec)
+{
+    // 石を置きます
+    int err = PutStone(z, color, kFillEyeOk);
+
+    // 非合法手なら強制終了
+    if (err != 0)
+    {
+        Prt("PutStone err=%d\n", err);
+        exit(0);
+    }
+
+    // 棋譜の末尾に記入
+    record[moves] = z;
+    record_time[moves] = sec;
+
+    // 棋譜の書くところを１つ進めます
+    moves++;
+
+    // 盤表示
+    PrintBoard();
+
+    // ハッシュコード表示
+    Prt("hashcode=");
+    PrtCode64(hashCode.hashcode);
+    Prt("\n");
 }

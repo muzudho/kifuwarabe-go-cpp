@@ -27,73 +27,6 @@ int path[kDMax];
 /// </summary>
 int depth;
 
-/// <summary>
-/// 1...black, 2...white, 3...ko
-/// </summary>
-const int kHashKinds = 4;
-
-/// <summary>
-/// コウ？
-/// </summary>
-const int kHashKo = 3;
-
-/// <summary>
-/// 盤の各交点の、種類別のハッシュ？
-/// </summary>
-uint64 hashboard[kBoardMax][kHashKinds];
-
-/// <summary>
-/// ハッシュ コード？
-/// </summary>
-uint64 hashcode = 0;
-
-/// <summary>
-/// GTPプロトコルとして送信せずに 引数r を表示？
-/// </summary>
-/// <param name="r"></param>
-void PrtCode64(uint64 r)
-{
-    //Prt("%016" PRIx64,r);
-    Prt("%08x%08x", (int)(r >> 32), (int)r);
-};
-
-/// <summary>
-/// 盤の各交点に乱数を割り振っている？
-/// </summary>
-void MakeHashboard()
-{
-    int z, i;
-    for (z = 0; z < kBoardMax; z++)
-    {
-        //  Prt("[%3d]=",z);
-        for (i = 0; i < kHashKinds; i++)
-        {
-            hashboard[z][i] = Rand64();
-            //    PrtCode64(hashboard[z][i]); Prt(",");
-        }
-        //  Prt("\n");
-    }
-}
-
-/// <summary>
-/// ハッシュコードの 2進数の 0と1 をひっくり返す？
-/// </summary>
-void HashPass()
-{
-    hashcode = ~hashcode;
-}
-
-/// <summary>
-/// XOR演算する？
-/// </summary>
-/// <param name="z">着手点</param>
-/// <param name="color">手番の色</param>
-void HashXor(int z, int color)
-{
-    // 指定座標、指定色のハッシュの 2進数の 0と1 を反転させたものを ハッシュコードに記憶させている？
-    hashcode ^= hashboard[z][color];
-}
-
 int FlipColor(int col)
 {
     return 3 - col;
@@ -222,7 +155,7 @@ void Position::TakeStone(int tz, int color)
 {
     int z, i;
 
-    HashXor(tz, color);
+    hashCode.HashXor(tz, color);
     Board[tz] = 0;
     for (i = 0; i < 4; i++)
     {
@@ -231,16 +164,6 @@ void Position::TakeStone(int tz, int color)
             TakeStone(z, color);
     }
 }
-
-/// <summary>
-/// 目潰しをエラーとするなら
-/// </summary>
-const int kFillEyeErr = 1;
-
-/// <summary>
-/// 目潰しを合法手とするなら（囲碁のルールでは合法手）
-/// </summary>
-const int kFillEyeOk = 0;
 
 /// <summary>
 /// put stone.
@@ -285,10 +208,10 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     if (tz == 0)
     {
         if (ko_z != 0)
-            HashXor(ko_z, kHashKo);
+            hashCode.HashXor(ko_z, kHashKo);
 
         ko_z = 0;
-        HashPass();
+        hashCode.HashPass();
         return 0;
     }
 
@@ -365,14 +288,14 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     Board[tz] = color;
 
     // 着手点のビット列を、XOR演算でひっくり返します
-    HashXor(tz, color);
+    hashCode.HashXor(tz, color);
 
     // ハッシュコードのビット列の 0,1 をひっくり返している？
-    HashPass();
+    hashCode.HashPass();
 
     // コウであれば、コウの場所のビット列の 0,1 をひっくり返している？
     if (ko_z != 0)
-        HashXor(ko_z, kHashKo);
+        hashCode.HashXor(ko_z, kHashKo);
 
     // 着手点を含む連の呼吸点の数を数えます
     CountLiberty(tz, &liberty, &stone);
@@ -381,7 +304,7 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     if (capture_sum == 1 && stone == 1 && liberty == 1)
     {
         ko_z = ko_maybe;
-        HashXor(ko_z, kHashKo);
+        hashCode.HashXor(ko_z, kHashKo);
     }
     else
     {
@@ -1172,40 +1095,7 @@ void Position::InitBoard()
     // 手数とコウとハッシュコードをクリアーします
     moves = 0;
     ko_z = 0;
-    hashcode = 0;
-}
-
-/// <summary>
-/// 指し手を棋譜に記入
-/// </summary>
-/// <param name="z">座標</param>
-/// <param name="color">手番の色</param>
-void Position::AddMoves(int z, int color, double sec)
-{
-    // 石を置きます
-    int err = PutStone(z, color, kFillEyeOk);
-
-    // 非合法手なら強制終了
-    if (err != 0)
-    {
-        Prt("PutStone err=%d\n", err);
-        exit(0);
-    }
-
-    // 棋譜の末尾に記入
-    record[moves] = z;
-    record_time[moves] = sec;
-
-    // 棋譜の書くところを１つ進めます
-    moves++;
-
-    // 盤表示
-    PrintBoard();
-
-    // ハッシュコード表示
-    Prt("hashcode=");
-    PrtCode64(hashcode);
-    Prt("\n");
+    hashCode.hashcode = 0;
 }
 
 /// <summary>
@@ -1470,7 +1360,7 @@ int main()
     position.InitBoard();
 
     // ハッシュボードの初期化
-    MakeHashboard();
+    position.hashCode.MakeHashboard();
 
     // 自己対戦
     if (0)

@@ -95,3 +95,9 @@ void SendGtp(const char* fmt, ...)
     vfprintf(stdout, fmt, ap);
     va_end(ap);
 }
+
+void PrtCode64(uint64 r)
+{
+    //Prt("%016" PRIx64,r);
+    Prt("%08x%08x", (int)(r >> 32), (int)r);
+};

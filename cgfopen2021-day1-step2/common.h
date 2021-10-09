@@ -4,6 +4,33 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+// 64ビット符号なし整数型の定義
+#if defined(_MSC_VER)
+typedef unsigned __int64 uint64;
+#define PRIx64 "I64x"
+#else
+#include <stdint.h>
+#include <sys/time.h>
+#include <unistd.h>
+typedef uint64_t uint64; // Linux
+#define PRIx64 "llx"
+#endif
+
+/// <summary>
+/// n路盤
+/// </summary>
+const int kBoardSize = 9;
+
+/// <summary>
+/// 両端に番兵込みの幅
+/// </summary>
+const int kWidth = (kBoardSize + 2);
+
+/// <summary>
+/// 番兵込みの盤の面積
+/// </summary>
+const int kBoardMax = (kWidth * kWidth);
+
 /// <summary>
 /// x, y を z（座標；配列のインデックス） に変換
 /// </summary>
@@ -43,3 +70,9 @@ void Prt(const char *fmt, ...);
 /// <param name="fmt">書式か？</param>
 /// <param name="">可変長引数</param>
 void SendGtp(const char* fmt, ...);
+
+/// <summary>
+/// GTPプロトコルとして送信せずに 引数r を表示？
+/// </summary>
+/// <param name="r"></param>
+void PrtCode64(uint64 r);

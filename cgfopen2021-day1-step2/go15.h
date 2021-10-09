@@ -18,6 +18,16 @@ const int kSearchPrimitive = 0;
 const int kSearchUct = 1;
 
 /// <summary>
+/// 目潰しをエラーとするなら
+/// </summary>
+const int kFillEyeErr = 1;
+
+/// <summary>
+/// 目潰しを合法手とするなら（囲碁のルールでは合法手）
+/// </summary>
+const int kFillEyeOk = 0;
+
+/// <summary>
 /// 石の色を反転
 /// </summary>
 /// <param name="col">石の色</param>

@@ -39,6 +39,9 @@
     <ClCompile Include="testPlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hashCode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="go15.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="testPlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashCode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
