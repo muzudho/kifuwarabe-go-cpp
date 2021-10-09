@@ -408,10 +408,12 @@ void GtpLoop()
 
     int x, y, z, ax, count;
 
+    // 難しいのでコメントアウトします
     // 標準出力をバッファリングせず、すぐに出力する設定（フラッシュを不要にします）
     // setbuf(stdout, NULL);
     // setvbuf(stdout, NULL, _IONBF, NULL);
 
+    // 難しいのでコメントアウトします
     // 標準エラー出力をバッファリングせず、すぐに出力する設定（フラッシュを不要にします）
     // setbuf(stderr, NULL);
     // setvbuf(stderr, NULL, _IONBF, NULL);
