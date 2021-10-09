@@ -527,8 +527,12 @@ void GtpLoop()
 
             // 着手点
             int z;
+            // 天元が空いていたら天元に打ちます
+            if(kBoardSize == 19 && position.Board[10*kWidth+10+1+kWidth]==0) {
+                z = 10*kWidth+10;
+            }
             // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
-            if (0 == Rand64() % 2) // search == kSearchUct
+            else if (0 == Rand64() % 2) // search == kSearchUct
             {
                 // UCTを使ったゲームプレイ
                 z = uct.GetBestUct(position, color);
