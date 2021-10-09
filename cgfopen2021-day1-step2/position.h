@@ -114,7 +114,14 @@ public:
     void PrintCriticality();
     void CountLibertySub(int tz, int color, int *p_liberty, int *p_stone);
     void CountLiberty(int tz, int *p_liberty, int *p_stone);
+
+    /// <summary>
+    /// 石を取り上げます
+    /// </summary>
+    /// <param name="tz">着手座標</param>
+    /// <param name="color">石の色</param>
     void TakeStone(int tz, int color);
+
     int PutStone(int tz, int color, int fill_eye_err);
 
 

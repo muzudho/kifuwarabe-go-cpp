@@ -147,25 +147,6 @@ void Position::CountLiberty(int tz, int* p_liberty, int* p_stone)
 }
 
 /// <summary>
-/// 石を取り上げます
-/// </summary>
-/// <param name="tz">着手座標</param>
-/// <param name="color">石の色</param>
-void Position::TakeStone(int tz, int color)
-{
-    int z, i;
-
-    hashCode.HashXor(tz, color);
-    Board[tz] = 0;
-    for (i = 0; i < 4; i++)
-    {
-        z = tz + kDir4[i];
-        if (Board[z] == color)
-            TakeStone(z, color);
-    }
-}
-
-/// <summary>
 /// put stone.
 /// </summary>
 /// <param name="tz">着手座標。0ならパス</param>

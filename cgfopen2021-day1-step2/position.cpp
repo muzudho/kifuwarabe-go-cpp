@@ -262,3 +262,17 @@ int Position::CountScore(int turn_color)
     //Prt("score=%d, win=%d\n",score, win);
     return win;
 }
+
+void Position::TakeStone(int tz, int color)
+{
+    int z, i;
+
+    hashCode.HashXor(tz, color);
+    Board[tz] = 0;
+    for (i = 0; i < 4; i++)
+    {
+        z = tz + kDir4[i];
+        if (Board[z] == color)
+            TakeStone(z, color);
+    }
+}
