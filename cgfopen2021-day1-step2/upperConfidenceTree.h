@@ -54,5 +54,4 @@ public:
     void UpdateRave(Node* pN, int color, int current_depth, double win);
 
     int SearchUct(int color, int node_n);
-    int GetBestUct(int color);
 };

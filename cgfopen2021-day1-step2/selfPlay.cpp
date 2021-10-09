@@ -1,7 +1,8 @@
 #include "selfPlay.h"
 #include "computerMove.h"
+#include "upperConfidenceTree.h"
 
-void Selfplay(Position position)
+void Selfplay(Position position, UpperConfidenceTree uct)
 {
     // 黒の手番
     int color = 1;
@@ -25,7 +26,7 @@ void Selfplay(Position position)
         }
 
         // 次の一手
-        z = PlayComputerMove(position, color, search);
+        z = PlayComputerMove(position, uct, color, search);
 
         // パスパスなら終局
         if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)

@@ -166,8 +166,6 @@ public:
     /// <returns></returns>
     double CountTotalTime();
 
-    int GetBestUct(int color);
-
     /// <summary>
     /// 盤の初期化
     /// </summary>
