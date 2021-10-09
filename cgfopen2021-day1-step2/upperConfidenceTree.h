@@ -43,7 +43,6 @@ public:
     int node_num = 0;
 
     int CreateNode(int prev_z);
-    int SelectBestUcb(int node_n, int color);
 
     /// <summary>
     /// レーブの更新？
@@ -63,4 +62,16 @@ public:
     /// <param name="node_n">ノードのリストのインデックス。最初は0</param>
     /// <returns>手番の勝率</returns>
     int SearchUct(Position position, int color, int node_n);
+
+    /// <summary>
+    /// UCBが最大の手を返します。
+    /// 一度も試していない手は優先的に選びます。
+    /// 定数 Ｃ は実験で決めてください。
+    /// PASS があるので、すべての手がエラーはありえません。
+    /// （UCTループ１回分の中で、定数倍ループ。m×n）
+    /// </summary>
+    /// <param name="node_n">ノードのリストのインデックス</param>
+    /// <param name="color">手番の色</param>
+    /// <returns>ノードのリストのインデックス。選択した子ノードを指します</returns>
+    int SelectBestUcb(int node_n, int color);
 };
