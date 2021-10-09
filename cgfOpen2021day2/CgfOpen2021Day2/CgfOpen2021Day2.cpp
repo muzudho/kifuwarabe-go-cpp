@@ -158,7 +158,10 @@ int Position::Playout(int turn_color)
                 }
                 if (i == empty_num)
                 {
-                    Prt("Err! prob_sum=%d,sum=%d,r=%d,r=%d\n", prob_sum, sum, r, i);
+                    std::cerr << "Err! prob_sum=" << prob_sum
+                        << ",sum=" << sum
+                        << ",r=" << r
+                        << ",i=" << i << std::endl;
                     exit(0);
                 }
                 z = empty[i][0];
@@ -188,7 +191,11 @@ int Position::Playout(int turn_color)
 
         // そうでなければ盤を表示して手番を変えて続行
         previous_z = z;
-        //  Prt("loop=%d,z=%s,c=%d,empty_num=%d,ko_z=%d\n",loop,GetCharZ(z),color,empty_num,ko_z);
+        // std::cerr << "loop=" << loop
+        //  << ",z=" << GetCharZ(z)
+        //  << ",c=" << color
+        //  << ",empty_num=" << empty_num
+        //  << ",ko_z=" << ko_z << std::endl;
 
         // 手番を反転
         color = FlipColor(color);
@@ -283,14 +290,18 @@ int Position::PrimitiveMonteCalro(int color)
             // 勝率
             win_rate = (double)win_sum / try_num;
             //  PrintBoard();
-            //  Prt("z=%d,win=%5.3f\n",Get81(z),win_rate);
+            // std::cerr << "z=" << Get81(z) 
+            // << ",win=" <<  std::setw( 5 ) << std::setprecision( 3 ) << win_rate << std::endl;
 
             // 最善手の更新
             if (win_rate > best_value)
             {
                 best_value = win_rate;
                 best_z = z;
-                //    Prt("best_z=%d,color=%d,v=%5.3f,try_num=%d\n",Get81(best_z),color,best_value,try_num);
+                // std::cerr << "best_z=" << Get81(best_z)
+                //  << ",color=" << color
+                //  << ",v=" << std::setw( 5 ) << std::setprecision( 3 ) << best_value
+                //  << ",try_num=" try_num << std::endl;
             }
 
             // コウの復元
@@ -335,7 +346,7 @@ int UpperConfidenceTree::CreateNode(int prev_z)
     // これ以上増やせません
     if (node_num == kNodeMax)
     {
-        Prt("nodeList over Err\n");
+        std::cerr << "nodeList over Err" << std::endl;
         exit(0);
     }
 
@@ -424,7 +435,7 @@ void GtpLoop()
         if (fgets(str, kStrMax, stdin) == NULL)
             break;
 
-        Prt("gtp<-%s", str);
+        std::cerr << "gtp<-" << str;
 
         // 文字列のスプリットをして、結果を sa配列に格納しています
         count = 0;

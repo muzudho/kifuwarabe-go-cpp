@@ -193,7 +193,16 @@ int UpperConfidenceTree::SelectBestUcb(int node_n, int color)
             ucb = c->rate + C * sqrt(log((double)pN->child_games_sum) / c->games);
 
             ucb_rave = beta * rave + (1 - beta) * ucb;
-            //    if ( depth==0 ) Prt("%2d:z=%2d,rate=%6.3f,games=%4d, rave_r=%6.3f,g=%4d, beta=%f,ucb_rave=%f\n", i, Get81(c->z), c->rate, c->games, c->rave_rate, c->rave_games,beta,ucb_rave);
+            // if ( depth==0 ) {
+            // std::cerr << std::setw(2) << i
+            //  << ":z=" << std::setw(2) << Get81(c->z)
+            //  << ",rate=" << std::setw(6) << std::setprecision(3) << c->rate
+            //  << ",games=" << std::setw(4) << c->games
+            //  << ", rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
+            //  << ",g=" << c->rave_games
+            //  << ", beta=" << beta
+            //  << ",ucb_rave=" << ucb_rave << std::endl;
+            // }
         }
 
         // UCB値の最大を更新
@@ -207,7 +216,7 @@ int UpperConfidenceTree::SelectBestUcb(int node_n, int color)
     // 1手も選ばれなかったらエラーなので強制終了
     if (select == -1)
     {
-        Prt("Err! select\n");
+        std::cerr << "Err! select" << std::endl;
         exit(0);
     }
 
@@ -276,16 +285,23 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
             max = c->games;
         }
 #if DEBUG
-        Prt("%2d:z=%2d,rate=%6.3f,games=%4d, rave_r=%6.3f,g=%4d\n",
-            i, Get81(c->z), c->rate, c->games, c->rave_rate, c->rave_games);
+        std::cerr << std::setw(2) << i
+            << ":z=" << std::setw(2) << Get81(c->z)
+            << ",rate=" << std::setw(6) << std::setprecision(3) << c->rate
+            << ",games=" << std::setw(4) << c->games
+            << ",rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
+            << ",g=" << std::setw(4) << c->rave_games << std::endl;
 #endif
     }
 
     // ベストなノードの座標
     best_z = pN->children[best_i].z;
 #if DEBUG
-    Prt("best_z=%d,rate=%6.3f,games=%4d,playouts=%d,nodes=%d\n",
-        Get81(best_z), pN->children[best_i].rate, max, all_playouts, uct.node_num);
+    std::cerr << "best_z=" << Get81(best_z)
+        << ",rate=" << std::setw(6) << std::setprecision(3) << pN->children[best_i].rate
+        << ",games=" << std::setw(4) << max
+        << ",playouts=" << all_playouts
+        << ",nodes=" << uct.node_num << std::endl;
 #endif
 
     return best_z;

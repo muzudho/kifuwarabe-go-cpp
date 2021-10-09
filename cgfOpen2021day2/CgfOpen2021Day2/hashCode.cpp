@@ -5,13 +5,14 @@ void HashCode::MakeHashboard()
     int z, i;
     for (z = 0; z < kBoardMax; z++)
     {
-        //  Prt("[%3d]=",z);
+        // std::cerr << "[" << z << "]=";
         for (i = 0; i < kHashKinds; i++)
         {
             hashboard[z][i] = Rand64();
-            //    PrtCode64(hashboard[z][i]); Prt(",");
+            //    PrtCode64(hashboard[z][i]);
+            // std::cerr << ",";
         }
-        //  Prt("\n");
+        // std::cerr << std::endl;
     }
 }
 

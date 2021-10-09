@@ -69,7 +69,7 @@ uint64 hashcode = 0;
 /// <param name="r"></param>
 void PrtCode64(uint64 r)
 {
-    std::cerr << std::hex << (int)(r >> 32) << std::hex << (int)r;
+    std::cerr << std::setw(8) << std::hex << (int)(r >> 32) << std::setw(8) << std::hex << (int)r;
 };
 
 /// <summary>
@@ -629,7 +629,7 @@ int Position::Playout(int turn_color)
                     std::cerr << "Err! prob_sum=" << prob_sum
                         << ",sum=" << sum
                         << ",r=" << r
-                        << ",r=" << i << std::endl;
+                        << ",i=" << i << std::endl;
                     exit(0);
                 }
                 z = empty[i][0];
@@ -1193,7 +1193,8 @@ int Position::GetBestUct(int color)
             max = c->games;
         }
 #if DEBUG
-        std::cerr << i << ":z=" << std::setw(2) << Get81(c->z)
+        std::cerr << std::setw(2) << i
+            << ":z=" << std::setw(2) << Get81(c->z)
             << ",rate=" << std::setw(6) << std::setprecision(3) << c->rate
             << ",games=" << std::setw(4) << c->games
             << ",rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
@@ -1500,7 +1501,7 @@ void GtpLoop()
         if (fgets(str, kStrMax, stdin) == NULL)
             break;
 
-        std::cerr << "gtp<-" << str << std::endl;
+        std::cerr << "gtp<-" << str;
 
         // 文字列のスプリットをして、結果を sa配列に格納しています
         count = 0;

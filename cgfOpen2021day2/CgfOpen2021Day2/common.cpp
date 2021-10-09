@@ -1,4 +1,6 @@
 ﻿#include "common.h"
+#include <iostream>
+#include <iomanip>
 
 int GetZ(int x, int y)
 {
@@ -99,8 +101,7 @@ void SendGtp(const char* fmt, ...)
 
 void PrtCode64(uint64 r)
 {
-    //Prt("%016" PRIx64,r);
-    Prt("%08x%08x", (int)(r >> 32), (int)r);
+    std::cerr << std::setw(8) << std::hex << (int)(r >> 32) << std::setw(8) << std::hex << (int)r;
 };
 
 int FlipColor(int color)

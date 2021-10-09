@@ -1,4 +1,6 @@
 ﻿#include "timeMan.h"
+#include <iomanip>
+#include <iostream>
 
 double TimeMan::GetClock()
 {
@@ -9,7 +11,7 @@ double TimeMan::GetClock()
     struct timezone zone;
     if (gettimeofday(&val, &zone) == -1)
     {
-        Prt("time err\n");
+        std::cerr << "time err" << std::endl;
         exit(0);
     }
     double t = val.tv_sec * 1000.0 + (val.tv_usec / 1000.0);
@@ -42,7 +44,9 @@ void TimeMan::SetUpStartTime(double total_time)
         time_limit_sec = 1.0;
     if (left_time < 20)
         time_limit_sec = 0.2;
-    Prt("time_limit_sec=%.1f, total=%.1f, left=%.1f\n", time_limit_sec, total_time, left_time);
+
+    std::cerr << "time_limit_sec=" << std::setprecision(1) << time_limit_sec
+        << ", total=" << std::setprecision(1) << total_time << ", left=" << std::setprecision(1) << left_time << std::endl;
 
     // 開始時刻
     start_time = GetClock();
