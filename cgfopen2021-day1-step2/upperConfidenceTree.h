@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.h"
 #include "node.h"
 
 /// <summary>
@@ -53,5 +54,13 @@ public:
     /// <param name="win">勝率</param>
     void UpdateRave(Node* pN, int color, int current_depth, double win);
 
-    int SearchUct(int color, int node_n);
+    /// <summary>
+    /// ゲームをプレイします（再帰関数）
+    /// UCTという探索の手法で行います
+    /// 指定の UCTのループ回数だけ呼び出されます（定数倍）
+    /// </summary>
+    /// <param name="color">手番の色。最初は考えているプレイヤーの色</param>
+    /// <param name="node_n">ノードのリストのインデックス。最初は0</param>
+    /// <returns>手番の勝率</returns>
+    int SearchUct(Position position, int color, int node_n);
 };

@@ -14,7 +14,8 @@ extern TimeMan timeMan;
 int PlayComputerMove(Position position, UpperConfidenceTree uct, int color, int search);
 
 /// <summary>
-/// 一番良く打たれた一手の座標を返します
+/// 一番良く打たれた一手の座標を返します。
+/// 手番で１回だけ呼び出されます
 /// </summary>
 /// <param name="color">手番の色</param>
 /// <returns>一番良く打たれた一手の座標</returns>

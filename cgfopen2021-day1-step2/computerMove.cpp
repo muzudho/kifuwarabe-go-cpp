@@ -105,7 +105,7 @@ int GetBestUct(Position position, UpperConfidenceTree uct, int color)
         depth = 0;
 
         // UCT探索
-        uct.SearchUct(color, next);
+        uct.SearchUct(position, color, next);
 
         // 現図を復元
         position.ko_z = ko_z_copy;
