@@ -1,6 +1,7 @@
 #pragma once
 
 #include <time.h>
+#include "common.h"
 
 /// <summary>
 /// 時間管理（Time Manager）
@@ -41,4 +42,11 @@ public:
     /// </summary>
     /// <returns>時間切れなら1を、そうでなければ0</returns>
     int IsTimeOver();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="total_time">消費時間の累計</param>
+    /// <returns></returns>
+    void TimeMan::SetUpStartTime(double total_time);
 };

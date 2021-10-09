@@ -24,6 +24,7 @@ void Selfplay(Position position, UpperConfidenceTree uct)
         }
 
         // 次の一手
+        timeMan.SetUpStartTime(position.CountTotalTime());
         z = PlayComputerMove(position, uct, color, search);
 
         // パスパスなら終局

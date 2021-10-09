@@ -473,6 +473,7 @@ void GtpLoop()
             if (tolower(sa[1][0]) == 'w')
                 color = 2;
 
+            timeMan.SetUpStartTime(position.CountTotalTime());
             z = PlayComputerMove(position, uct, color, kSearchUct);
             SendGtp("= %s\n\n", GetCharZ(z));
         }
