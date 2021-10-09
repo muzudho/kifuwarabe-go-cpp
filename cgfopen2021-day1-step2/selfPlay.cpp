@@ -1,4 +1,5 @@
 #include "selfPlay.h"
+#include "computerMove.h"
 
 void Selfplay(Position position)
 {
@@ -24,7 +25,7 @@ void Selfplay(Position position)
         }
 
         // 次の一手
-        z = position.PlayComputerMove(color, search);
+        z = PlayComputerMove(position, color, search);
 
         // パスパスなら終局
         if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)

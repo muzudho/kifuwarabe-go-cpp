@@ -14,6 +14,7 @@
 #include "randXorShift.h"
 #include "selfPlay.h"
 #include "testPlay.h"
+#include "computerMove.h"
 
 Position position = Position();
 
@@ -638,79 +639,6 @@ void Position::InitBoard()
     hashCode.hashcode = 0;
 }
 
-/// <summary>
-/// コンピューターの指し手
-/// </summary>
-/// <param name="color">手番の色</param>
-/// <param name="search">探索方法。SEARCH_PRIMITIVE または kSearchUct</param>
-/// <returns>座標</returns>
-int Position::PlayComputerMove(int color, int search)
-{
-    // 秒
-    double sec;
-
-    // 着手点
-    int z;
-
-    // 累計時間
-    double total_time = CountTotalTime();
-
-    double base_time = 60 * 10; // 10 minutes
-    double left_time = base_time - total_time;
-    int div = 12; // 40 ... 13x13, 70 ... 19x19
-    timeMan.time_limit_sec = left_time / div;
-    if (left_time < 60)
-        timeMan.time_limit_sec = 1.0;
-    if (left_time < 20)
-        timeMan.time_limit_sec = 0.2;
-    Prt("time_limit_sec=%.1f, total=%.1f, left=%.1f\n", timeMan.time_limit_sec, total_time, left_time);
-
-    // 開始時刻
-    timeMan.start_time = timeMan.GetClock();
-
-    // プレイアウト回数
-    all_playouts = 0;
-
-    // 盤領域をゼロ クリアー？
-    memset(board_area_sum, 0, sizeof(board_area_sum));
-
-    // 盤上の勝ち数をゼロ クリアー？
-    memset(board_winner, 0, sizeof(board_winner));
-
-    // 勝ち数をクリアー？
-    memset(winner_count, 0, sizeof(winner_count));
-
-    // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
-    if (0 == Rand64() % 2) // search == kSearchUct
-    {
-        // UCTを使ったゲームプレイ
-        z = GetBestUct(color);
-    }
-    else
-    {
-        // 原始モンテカルロでゲームプレイ
-        z = PrimitiveMonteCalro(color);
-    }
-
-    // 盤領域を表示？
-    //PrintBoardArea();
-
-    // クリティカルさを表示？
-    //PrintCriticality();
-
-    // 消費時間（秒）？
-    sec = timeMan.GetSpendTime(timeMan.start_time);
-
-    // 情報表示
-    Prt("z=%s,color=%d,moves=%d,playouts=%d, %.1f sec(%.0f po/sec),depth=%d\n",
-        GetCharZ(z), color, moves, all_playouts, sec, all_playouts / sec, depth);
-
-    // 指し手を棋譜に記憶します
-    AddMoves(z, color, sec);
-
-    return z;
-}
-
 // GTPプロトコルの1行を読込むのに十分な文字列サイズ
 const int kStrMax = 256;
 
@@ -814,7 +742,7 @@ void GtpLoop()
             if (tolower(sa[1][0]) == 'w')
                 color = 2;
 
-            z = position.PlayComputerMove(color, kSearchUct);
+            z = PlayComputerMove(position, color, kSearchUct);
             SendGtp("= %s\n\n", GetCharZ(z));
         }
         // 石の色と座標を指定しますので、置いてください

@@ -176,8 +176,6 @@ public:
     /// <param name="color">手番の色</param>
     void AddMoves(int z, int color, double sec);
 
-    int PlayComputerMove(int color, int search);
-
     /// <summary>
     /// print SGF game record
     /// </summary>
