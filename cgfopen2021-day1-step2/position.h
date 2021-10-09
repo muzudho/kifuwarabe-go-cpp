@@ -132,6 +132,5 @@ public:
     void AddMoves(int z, int color, double sec);
     int PlayComputerMove(int color, int search);
     void PrintSgf();
-    void Selfplay();
     void TestPlayout();
 };

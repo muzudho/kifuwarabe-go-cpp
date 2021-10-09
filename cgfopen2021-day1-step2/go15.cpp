@@ -1343,7 +1343,7 @@ void Position::PrintSgf()
 /// <summary>
 /// 黒番は原始モンテカルロ、白番はUCTで自己対戦
 /// </summary>
-void Position::Selfplay()
+void Selfplay()
 {
     // 黒の手番
     int color = 1;
@@ -1367,14 +1367,14 @@ void Position::Selfplay()
         }
 
         // 次の一手
-        z = PlayComputerMove(color, search);
+        z = position.PlayComputerMove(color, search);
 
         // パスパスなら終局
-        if (z == 0 && moves > 1 && record[moves - 2] == 0)
+        if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)
             break;
 
         // 300手を超えても終局
-        if (moves > 300)
+        if (position.moves > 300)
             break; // too long
 
         // 手番の色反転
@@ -1382,7 +1382,7 @@ void Position::Selfplay()
     }
 
     // SGF形式で棋譜表示
-    PrintSgf();
+    position.PrintSgf();
 }
 
 /// <summary>
@@ -1480,7 +1480,7 @@ void GtpLoop()
         else if (strstr(sa[0], "name"))
         {
             // your_program_name
-            SendGtp("= kif\n\n");
+            SendGtp("= kifuwarabe\n\n");
         }
         // 思考エンジンのバージョンを返してください
         else if (strstr(sa[0], "version"))
@@ -1552,7 +1552,7 @@ int main()
     // 自己対戦
     if (0)
     {
-        position.Selfplay();
+        Selfplay();
         return 0;
     }
 
