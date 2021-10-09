@@ -76,3 +76,10 @@ void SendGtp(const char* fmt, ...);
 /// </summary>
 /// <param name="r"></param>
 void PrtCode64(uint64 r);
+
+/// <summary>
+/// 白黒を反転させます
+/// </summary>
+/// <param name="color"></param>
+/// <returns></returns>
+int FlipColor(int color);

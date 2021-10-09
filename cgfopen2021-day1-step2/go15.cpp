@@ -27,11 +27,6 @@ int path[kDMax];
 /// </summary>
 int depth;
 
-int FlipColor(int col)
-{
-    return 3 - col;
-}
-
 /// <summary>
 /// 盤領域を 標準エラー出力へ出力？
 /// </summary>
