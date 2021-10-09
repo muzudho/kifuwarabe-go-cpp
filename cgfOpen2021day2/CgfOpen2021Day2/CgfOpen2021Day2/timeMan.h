@@ -48,5 +48,5 @@ public:
     /// </summary>
     /// <param name="total_time">消費時間の累計</param>
     /// <returns></returns>
-    void TimeMan::SetUpStartTime(double total_time);
+    void SetUpStartTime(double total_time);
 };

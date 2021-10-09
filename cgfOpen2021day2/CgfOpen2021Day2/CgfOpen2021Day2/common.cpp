@@ -38,7 +38,8 @@ char *GetCharZ(int z)
     static char buf[16];
 
     // パス
-    sprintf(buf, "pass");
+    // sprintf(buf, "pass");
+    sprintf_s(buf, "pass");
     if (z == 0)
         return buf;
 
@@ -50,7 +51,8 @@ char *GetCharZ(int z)
     if (ax >= 'I')
         ax++; // from 'A' to 'T', excluding 'I'
 
-    sprintf(buf, "%c%d", ax, kBoardSize + 1 - y);
+    // sprintf(buf, "%c%d", ax, kBoardSize + 1 - y);
+    sprintf_s(buf, "%c%d", ax, kBoardSize + 1 - y);
 
     return buf;
 }
@@ -63,8 +65,8 @@ void Prt(const char *fmt, ...)
 
     // （思考エンジンの.exeの方ではなく）cgfgoban.exeのディレクトリーにファイル出力します
     {
-        FILE *fp = fopen("out.txt","a");
-        if ( fp ) {
+        FILE *fp;
+        if (0==fopen_s(&fp, "out.txt", "a")) {
             // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);
@@ -83,8 +85,8 @@ void SendGtp(const char* fmt, ...)
 
     // （思考エンジンの.exeの方ではなく）cgfgoban.exeのディレクトリーにファイル出力します
     {
-        FILE* fp = fopen("out.txt", "a");
-        if (fp) {
+        FILE* fp;
+        if (0==fopen_s(&fp, "out.txt", "a")) {
             // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);

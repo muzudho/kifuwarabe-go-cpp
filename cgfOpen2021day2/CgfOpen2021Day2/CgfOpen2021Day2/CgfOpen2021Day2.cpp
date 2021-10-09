@@ -1,4 +1,21 @@
-﻿// sprintf is Err in VC++
+﻿// CgfOpen2021Day2.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
+//
+
+#include <iostream>
+#include <sys/stat.h> // setvbuf
+
+// プログラムの実行: Ctrl + F5 または [デバッグ] > [デバッグなしで開始] メニュー
+// プログラムのデバッグ: F5 または [デバッグ] > [デバッグの開始] メニュー
+
+// 作業を開始するためのヒント: 
+//    1. ソリューション エクスプローラー ウィンドウを使用してファイルを追加/管理します 
+//   2. チーム エクスプローラー ウィンドウを使用してソース管理に接続します
+//   3. 出力ウィンドウを使用して、ビルド出力とその他のメッセージを表示します
+//   4. エラー一覧ウィンドウを使用してエラーを表示します
+//   5. [プロジェクト] > [新しい項目の追加] と移動して新しいコード ファイルを作成するか、[プロジェクト] > [既存の項目の追加] と移動して既存のコード ファイルをプロジェクトに追加します
+//   6. 後ほどこのプロジェクトを再び開く場合、[ファイル] > [開く] > [プロジェクト] と移動して .sln ファイルを選択します
+
+// sprintf is Err in VC++
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "go15.h"
@@ -387,17 +404,19 @@ void GtpLoop()
     char sa[kTokenMax][kStrMax];
 
     // コマンドはスペース区切り
-    char seps[] = " ";
+    char delim[] = " ";
 
     // スプリットされた文字列１つ
     char* token;
     int x, y, z, ax, count;
 
-    // 標準出力
-    setbuf(stdout, NULL);
+    // 標準出力をバッファリングせず、すぐに出力する設定（フラッシュを不要にします）
+    // setbuf(stdout, NULL);
+    // setvbuf(stdout, NULL, _IONBF, NULL);
 
-    // 標準エラー出力
-    setbuf(stderr, NULL);
+    // 標準エラー出力をバッファリングせず、すぐに出力する設定（フラッシュを不要にします）
+    // setbuf(stderr, NULL);
+    // setvbuf(stderr, NULL, _IONBF, NULL);
 
     for (;;)
     {
@@ -405,18 +424,25 @@ void GtpLoop()
         if (fgets(str, kStrMax, stdin) == NULL)
             break;
 
-        Prt("gtp<-%s",str);
+        Prt("gtp<-%s", str);
 
         // 文字列のスプリットをして、結果を sa配列に格納しています
         count = 0;
-        token = strtok(str, seps);
+
+        // token = strtok(str, delim);
+        char* next_token;
+        token = strtok_s(str, delim, &next_token);
+
         while (token != NULL)
         {
-            strcpy(sa[count], token);
+            // strcpy(sa[count], token);
+            strcpy_s(sa[count], kTokenMax * kStrMax, token);
+
             count++;
             if (count == kTokenMax)
                 break;
-            token = strtok(NULL, seps);
+            // token = strtok(NULL, delim);
+            token = strtok_s(NULL, delim, &next_token);
         }
 
         // 盤のサイズを n路 にしてください
