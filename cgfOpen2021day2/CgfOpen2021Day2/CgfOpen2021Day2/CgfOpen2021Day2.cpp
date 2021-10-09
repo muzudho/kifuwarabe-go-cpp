@@ -406,8 +406,6 @@ void GtpLoop()
     // コマンドはスペース区切り
     char delim[] = " ";
 
-    // スプリットされた文字列１つ
-    char* token;
     int x, y, z, ax, count;
 
     // 標準出力をバッファリングせず、すぐに出力する設定（フラッシュを不要にします）
@@ -429,20 +427,25 @@ void GtpLoop()
         // 文字列のスプリットをして、結果を sa配列に格納しています
         count = 0;
 
+        // スプリットされた文字列１つ
+        char* token;
         // token = strtok(str, delim);
-        char* next_token;
-        token = strtok_s(str, delim, &next_token);
+        // strtok_sの内部で使用します
+        char* context;
+        token = strtok_s(str, delim, &context);
 
         while (token != NULL)
         {
             // strcpy(sa[count], token);
-            strcpy_s(sa[count], kTokenMax * kStrMax, token);
+            strcpy_s(sa[count], kStrMax, token);
 
             count++;
             if (count == kTokenMax)
                 break;
+
+            // 2回目以降は第一引数をNULLにします
             // token = strtok(NULL, delim);
-            token = strtok_s(NULL, delim, &next_token);
+            token = strtok_s(NULL, delim, &context);
         }
 
         // 盤のサイズを n路 にしてください
