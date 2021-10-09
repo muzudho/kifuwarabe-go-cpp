@@ -1,5 +1,7 @@
 #pragma once
 
+#include <time.h>
+
 /// <summary>
 /// 時間管理（Time Manager）
 /// </summary>

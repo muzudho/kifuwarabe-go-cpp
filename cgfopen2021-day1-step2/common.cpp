@@ -1,5 +1,4 @@
 #include "common.h"
-#include "position.h"
 
 int GetZ(int x, int y)
 {

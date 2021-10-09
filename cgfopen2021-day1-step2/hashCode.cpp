@@ -1,5 +1,4 @@
 #include "hashCode.h"
-#include "randXorShift.h"
 
 void HashCode::MakeHashboard()
 {

@@ -1,10 +1,6 @@
 // sprintf is Err in VC++
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <ctype.h>
 #include "go15.h"
 #include "child.h"
 #include "node.h"

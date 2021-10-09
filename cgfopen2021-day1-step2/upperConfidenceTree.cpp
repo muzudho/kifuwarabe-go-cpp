@@ -1,5 +1,3 @@
-#include <stdlib.h> // rand()
-#include <string.h> // memset()
 #include "upperConfidenceTree.h"
 
 void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, double win)

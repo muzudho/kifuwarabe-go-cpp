@@ -1,7 +1,4 @@
-#include <string.h>
 #include "computerMove.h"
-#include "randXorShift.h"
-#include "upperConfidenceTree.h"
 
 int PlayComputerMove(Position position, UpperConfidenceTree uct, int color, int search)
 {

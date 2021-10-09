@@ -1,4 +1,3 @@
-#include <time.h>
 #include "timeMan.h"
 
 double TimeMan::GetClock()

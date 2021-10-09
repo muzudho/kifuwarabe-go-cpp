@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.h"
+#include "randXorShift.h"
 
 /// <summary>
 /// 1...black, 2...white, 3...ko

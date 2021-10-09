@@ -1,6 +1,4 @@
 #include "selfPlay.h"
-#include "computerMove.h"
-#include "upperConfidenceTree.h"
 
 void Selfplay(Position position, UpperConfidenceTree uct)
 {

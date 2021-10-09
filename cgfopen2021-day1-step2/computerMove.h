@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+#include "randXorShift.h"
 #include "position.h"
 #include "upperConfidenceTree.h"
 

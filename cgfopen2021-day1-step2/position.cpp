@@ -1,6 +1,4 @@
-#include "common.h"
 #include "position.h"
-#include <stdlib.h>
 
 /// <summary>
 /// 盤の初期化
