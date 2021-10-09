@@ -69,7 +69,7 @@ uint64 hashcode = 0;
 /// <param name="r"></param>
 void PrtCode64(uint64 r)
 {
-    std::cerr << std::hex << (int)(r >> 32) << std::hex << (int)r << std::endl;
+    std::cerr << std::hex << (int)(r >> 32) << std::hex << (int)r;
 };
 
 /// <summary>
@@ -80,12 +80,12 @@ void MakeHashboard()
     int z, i;
     for (z = 0; z < kBoardMax; z++)
     {
-        // std::cerr << "[" << z << "]=" << std::endl;
+        // std::cerr << "[" << z << "]=";
         for (i = 0; i < kHashKinds; i++)
         {
             hashboard[z][i] = Rand64();
             //    PrtCode64(hashboard[z][i]);
-            // std::cerr << "," << std::endl;
+            // std::cerr << ",";
         }
         // std::cerr << std::endl;
     }
@@ -130,21 +130,21 @@ void Position::PrintBoardArea()
     if (all == 0)
         all = 1;
 
-    std::cerr << "board_area_sum" << std::endl << "   " << std::endl;
+    std::cerr << "board_area_sum" << std::endl << "   ";
     for (x = 0; x < kBoardSize; x++) {
-        std::cerr << "   " << ('A' + x + (x > 7)) << std::endl;
+        std::cerr << "   " << (char)('A' + x + (x > 7));
     }
-
     std::cerr << std::endl;
+
     for (y = 0; y < kBoardSize; y++)
     {
-        std::cerr << std::setw(2) << (kBoardSize - y) << " " << std::endl;
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
 
         for (x = 0; x < kBoardSize; x++)
         {
             int sum = board_area_sum[GetZ(x + 1, y + 1)];
             double per = 100.0 * sum / all;
-            std::cerr << std::setw(4) << std::setprecision(0) << per << std::endl;
+            std::cerr << std::setw(4) << std::setprecision(0) << per;
         }
 
         std::cerr << std::endl;
@@ -174,20 +174,19 @@ void Position::PrintCriticality()
 {
     int x, y;
 
-    std::cerr << "criticality" << std::endl << "  " << std::endl;
-
+    std::cerr << "criticality" << std::endl << "  ";
     for (x = 0; x < kBoardSize; x++) {
-        std::cerr << "    " << ('A' + x + (x > 7)) << std::endl;
+        std::cerr << "    " << (char)('A' + x + (x > 7));
     }
-
     std::cerr << std::endl;
+
     for (y = 0; y < kBoardSize; y++)
     {
-        std::cerr << std::setw(2) << (kBoardSize - y) << " " << std::endl;
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
         for (x = 0; x < kBoardSize; x++)
         {
             double crt = GetCriticality(GetZ(x + 1, y + 1));
-            std::cerr << std::setw(5) << std::setprecision(2) << crt << std::endl;
+            std::cerr << std::setw(5) << std::setprecision(2) << crt;
         }
         std::cerr << std::endl;
     }
@@ -1265,7 +1264,7 @@ void Position::AddMoves(int z, int color, double sec)
     PrintBoard();
 
     // ハッシュコード表示
-    std::cerr << "hashcode=" << std::endl;
+    std::cerr << "hashcode=";
     PrtCode64(hashcode);
     std::cerr << std::endl;
 }
@@ -1363,7 +1362,7 @@ void Position::PrintSgf()
     int i;
 
     // ヘッダー出力
-    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]" << std::endl;
+    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]";
 
     // 指し手出力
     for (i = 0; i < moves; i++)
@@ -1380,16 +1379,16 @@ void Position::PrintSgf()
         // 色
         const char* sStone[2] = { "B", "W" };
 
-        std::cerr << ";" << sStone[i & 1] << std::endl;
+        std::cerr << ";" << sStone[i & 1];
 
         // パス
         if (z == 0)
         {
-            std::cerr << "[]" << std::endl;
+            std::cerr << "[]";
         }
         else
         {
-            std::cerr << "[" << (x + 'a' - 1) << (y + 'a' - 1) << "]" << std::endl;
+            std::cerr << "[" << (x + 'a' - 1) << (y + 'a' - 1) << "]";
         }
 
         // 改行
