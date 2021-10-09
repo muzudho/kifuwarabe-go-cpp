@@ -329,3 +329,144 @@ double Position::GetCriticality(int z)
     double criticality = (per - (bp + wp));
     return criticality;
 }
+
+int Position::PutStone(int tz, int color, int fill_eye_err)
+{
+    // 検索情報を覚えておく配列
+    int around[4][3];
+
+    // 相手の石の色
+    int un_col = FlipColor(color);
+
+    // 空白に石を置いたら1
+    int space = 0;
+
+    // 壁に石を置いたら1
+    int wall = 0;
+
+    // 自殺手になってしまうとき1
+    int mycol_safe = 0;
+
+    // 取り上げた石の数
+    int capture_sum = 0;
+
+    // コウかもしれないとき1
+    int ko_maybe = 0;
+
+    // 呼吸点の数
+    int liberty;
+
+    // 連の石の数
+    int stone;
+
+    // ループ・カウンタ
+    int i;
+
+    // pass
+    if (tz == 0)
+    {
+        if (ko_z != 0)
+            hashCode.HashXor(ko_z, kHashKo);
+
+        ko_z = 0;
+        hashCode.HashPass();
+        return 0;
+    }
+
+    // count 4 neighbor's liberty and stones.
+    for (i = 0; i < 4; i++)
+    {
+        int z, c, liberty, stone;
+        around[i][0] = around[i][1] = around[i][2] = 0;
+
+        // 隣の座標
+        z = tz + kDir4[i];
+        c = Board[z]; // color
+
+        // もし、隣が空点なら
+        if (c == 0)
+            space++;
+
+        // もし、隣が壁なら
+        if (c == 3)
+            wall++;
+
+        // もし、隣が空点または壁なら
+        if (c == 0 || c == 3)
+            continue;
+
+        // 呼吸点の数と、連の石の数を数えます
+        CountLiberty(z, &liberty, &stone);
+
+        // 隣の石が相手の色で、呼吸点が1なら、その石を取れます
+        around[i][0] = liberty;
+        around[i][1] = stone;
+        around[i][2] = c;
+
+        // 隣の石が相手の色で、呼吸点が1なら、その石を取れます
+        if (c == un_col && liberty == 1)
+        {
+            capture_sum += stone;
+            ko_maybe = z;
+        }
+
+        // もし隣に自分の色の石があっても、その石の呼吸点が２以上あればセーフ
+        if (c == color && liberty >= 2)
+            mycol_safe++;
+    }
+
+    // 石を取っておらず、隣に空点がなく、隣に呼吸点が２つ以上空いている自分の石もないなら、自殺手
+    if (capture_sum == 0 && space == 0 && mycol_safe == 0)
+        return 1; // suicide
+
+    // もし、コウの座標に石を置こうとしたら、コウ
+    if (tz == ko_z)
+        return 2; // ko
+
+    // もし、目の座標に石を置こうとしたら、目潰し
+    if (wall + mycol_safe == 4 && fill_eye_err)
+        return 3; // eye
+
+    // もし、石の上に石を置こうとしたら、反則手
+    if (Board[tz] != 0)
+        return 4;
+
+    // 取れる相手の石を取ります
+    for (i = 0; i < 4; i++)
+    {
+        int lib = around[i][0];
+        int c = around[i][2];
+        if (c == un_col && lib == 1 && Board[tz + kDir4[i]] != 0)
+        {
+            TakeStone(tz + kDir4[i], un_col);
+        }
+    }
+
+    // 石を置きます
+    Board[tz] = color;
+
+    // 着手点のビット列を、XOR演算でひっくり返します
+    hashCode.HashXor(tz, color);
+
+    // ハッシュコードのビット列の 0,1 をひっくり返している？
+    hashCode.HashPass();
+
+    // コウであれば、コウの場所のビット列の 0,1 をひっくり返している？
+    if (ko_z != 0)
+        hashCode.HashXor(ko_z, kHashKo);
+
+    // 着手点を含む連の呼吸点の数を数えます
+    CountLiberty(tz, &liberty, &stone);
+
+    // 石を1個取ったらコウかも知れない
+    if (capture_sum == 1 && stone == 1 && liberty == 1)
+    {
+        ko_z = ko_maybe;
+        hashCode.HashXor(ko_z, kHashKo);
+    }
+    else
+    {
+        ko_z = 0;
+    }
+    return 0;
+}

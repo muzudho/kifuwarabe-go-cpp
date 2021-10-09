@@ -140,8 +140,14 @@ public:
     /// <param name="color">石の色</param>
     void TakeStone(int tz, int color);
 
+    /// <summary>
+    /// put stone.
+    /// </summary>
+    /// <param name="tz">着手座標。0ならパス</param>
+    /// <param name="color">石の色</param>
+    /// <param name="fill_eye_err">目潰しをエラーとするなら1、そうでないなら0</param>
+    /// <returns>エラーコード。success returns 0. in playout, fill_eye_err = 1</returns>
     int PutStone(int tz, int color, int fill_eye_err);
-
 
     /// <summary>
     /// 地の簡易計算（これが厳密に計算できるようなら囲碁は完全解明されている）を表示し、勝敗を返します。
