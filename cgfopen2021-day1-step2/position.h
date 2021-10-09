@@ -116,10 +116,25 @@ public:
     void CountLiberty(int tz, int *p_liberty, int *p_stone);
     void TakeStone(int tz, int color);
     int PutStone(int tz, int color, int fill_eye_err);
+
+
+    /// <summary>
+    /// 地の簡易計算（これが厳密に計算できるようなら囲碁は完全解明されている）を表示し、勝敗を返します。
+    /// スコアにはコミは含みませんが、勝敗にはコミを含んでいます。
+    /// </summary>
+    /// <param name="turn_color">手番の色</param>
+    /// <returns>黒の勝ちなら1、負けなら0</returns>
     int CountScore(int turn_color);
+
     int Playout(int turn_color);
     int PrimitiveMonteCalro(int color);
+
+    /// <summary>
+    /// 消費時間合計
+    /// </summary>
+    /// <returns></returns>
     double CountTotalTime();
+
     int GetBestUct(int color);
     void InitBoard();
 
