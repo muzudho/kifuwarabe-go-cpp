@@ -13,6 +13,7 @@
 #include "common.h"
 #include "randXorShift.h"
 #include "selfPlay.h"
+#include "testPlay.h"
 
 Position position = Position();
 
@@ -1325,24 +1326,6 @@ void Position::PrintSgf()
     Prt(")\n");
 }
 
-/// <summary>
-/// 黒手番でプレイアウトのテスト
-/// </summary>
-void Position::TestPlayout()
-{
-    // テストプレイであるというフラグを立てます
-    flag_test_playout = 1;
-
-    // 黒手番でプレイアウト
-    Playout(1);
-
-    // 盤表示
-    PrintBoard();
-
-    // SGF形式の棋譜を出力
-    PrintSgf();
-}
-
 // GTPプロトコルの1行を読込むのに十分な文字列サイズ
 const int kStrMax = 256;
 
@@ -1499,7 +1482,7 @@ int main()
     // プレイアウトのテスト
     if (0)
     {
-        position.TestPlayout();
+        TestPlayout(position);
         return 0;
     }
 

@@ -125,6 +125,7 @@
     <ClCompile Include="position.cpp" />
     <ClCompile Include="randXorShift.cpp" />
     <ClCompile Include="selfPlay.cpp" />
+    <ClCompile Include="testPlay.cpp" />
     <ClCompile Include="timeMan.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="position.h" />
     <ClInclude Include="randXorShift.h" />
     <ClInclude Include="selfPlay.h" />
+    <ClInclude Include="testPlay.h" />
     <ClInclude Include="timeMan.h" />
     <ClInclude Include="upperConfidenceTree.h" />
   </ItemGroup>
