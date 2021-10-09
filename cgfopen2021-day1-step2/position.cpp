@@ -78,3 +78,45 @@ void Position::AddMoves(int z, int color, double sec)
     PrtCode64(hashCode.hashcode);
     Prt("\n");
 }
+
+void Position::PrintSgf()
+{
+    int i;
+
+    // ヘッダー出力
+    Prt("(;GM[1]SZ[%d]KM[%.1f]PB[]PW[]\n", kBoardSize, komi);
+
+    // 指し手出力
+    for (i = 0; i < moves; i++)
+    {
+        // 座標
+        int z = record[i];
+
+        // 段
+        int y = z / kWidth;
+
+        // 筋
+        int x = z - y * kWidth;
+
+        // 色
+        const char* sStone[2] = { "B", "W" };
+        Prt(";%s", sStone[i & 1]);
+
+        // パス
+        if (z == 0)
+        {
+            Prt("[]");
+        }
+        else
+        {
+            Prt("[%c%c]", x + 'a' - 1, y + 'a' - 1);
+        }
+
+        // 改行
+        if (((i + 1) % 10) == 0)
+            Prt("\n");
+    }
+
+    // 終端
+    Prt(")\n");
+}
