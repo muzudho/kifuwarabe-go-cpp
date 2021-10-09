@@ -6,13 +6,13 @@
 #include <limits.h>
 #include <ctype.h>
 #include "go15.h"
-#include "timeMan.h"
 #include "child.h"
 #include "node.h"
 #include "upperConfidenceTree.h"
 #include "position.h"
 #include "common.h"
 #include "randXorShift.h"
+#include "selfPlay.h"
 
 Position position = Position();
 
@@ -93,11 +93,6 @@ void HashXor(int z, int color)
     hashcode ^= hashboard[z][color];
 }
 
-/// <summary>
-/// 石の色を反転
-/// </summary>
-/// <param name="col">石の色</param>
-/// <returns>反転した石の色</returns>
 int FlipColor(int col)
 {
     return 3 - col;
@@ -1213,16 +1208,6 @@ void Position::AddMoves(int z, int color, double sec)
 }
 
 /// <summary>
-/// 原始モンテカルロ探索
-/// </summary>
-const int kSearchPrimitive = 0;
-
-/// <summary>
-/// UCT探索
-/// </summary>
-const int kSearchUct = 1;
-
-/// <summary>
 /// コンピューターの指し手
 /// </summary>
 /// <param name="color">手番の色</param>
@@ -1338,51 +1323,6 @@ void Position::PrintSgf()
 
     // 終端
     Prt(")\n");
-}
-
-/// <summary>
-/// 黒番は原始モンテカルロ、白番はUCTで自己対戦
-/// </summary>
-void Selfplay()
-{
-    // 黒の手番
-    int color = 1;
-
-    // 座標
-    int z;
-
-    // 探索方法フラグ
-    int search;
-
-    for (;;)
-    {
-        // 黒番、白番ともにUCT探索
-        if (color == 1)
-        {
-            search = kSearchUct; //kSearchPrimitive;
-        }
-        else
-        {
-            search = kSearchUct;
-        }
-
-        // 次の一手
-        z = position.PlayComputerMove(color, search);
-
-        // パスパスなら終局
-        if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)
-            break;
-
-        // 300手を超えても終局
-        if (position.moves > 300)
-            break; // too long
-
-        // 手番の色反転
-        color = FlipColor(color);
-    }
-
-    // SGF形式で棋譜表示
-    position.PrintSgf();
 }
 
 /// <summary>
@@ -1552,7 +1492,7 @@ int main()
     // 自己対戦
     if (0)
     {
-        Selfplay();
+        Selfplay(position);
         return 0;
     }
 

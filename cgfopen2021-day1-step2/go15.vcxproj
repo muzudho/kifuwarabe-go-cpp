@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2F779CC4-9DD5-4968-850D-4BBB758AE634}</ProjectGuid>
-    <ProjectName>cgfopen2021-day1-step2</ProjectName>
+    <ProjectName>go15</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
