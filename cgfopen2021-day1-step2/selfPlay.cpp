@@ -25,7 +25,9 @@ void Selfplay(Position position, UpperConfidenceTree uct)
 
         // 次の一手
         timeMan.SetUpStartTime(position.CountTotalTime());
+        position.ClearBeforeComputerMove();
         z = PlayComputerMove(position, uct, color, search);
+        position.AfterComputerMove(color, z);
 
         // パスパスなら終局
         if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)

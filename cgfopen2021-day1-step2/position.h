@@ -20,6 +20,9 @@ const int kDir8[8] = { +1, +kWidth, -1, -kWidth, +1 + kWidth, +kWidth - 1, -1 - 
 /// </summary>
 const int kMaxMoves = 1000;
 
+extern TimeMan timeMan;
+extern int depth;
+
 /// <summary>
 /// 局面
 /// </summary>
@@ -183,4 +186,7 @@ public:
     /// print SGF game record
     /// </summary>
     void PrintSgf();
+
+    void ClearBeforeComputerMove();
+    void AfterComputerMove(int color, int z);
 };

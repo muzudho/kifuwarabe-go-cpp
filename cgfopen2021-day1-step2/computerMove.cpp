@@ -2,20 +2,6 @@
 
 int PlayComputerMove(Position position, UpperConfidenceTree uct, int color, int search)
 {
-    timeMan.SetUpStartTime(position.CountTotalTime());
-
-    // プレイアウト回数
-    position.all_playouts = 0;
-
-    // 盤領域をゼロ クリアー？
-    memset(position.board_area_sum, 0, sizeof(position.board_area_sum));
-
-    // 盤上の勝ち数をゼロ クリアー？
-    memset(position.board_winner, 0, sizeof(position.board_winner));
-
-    // 勝ち数をクリアー？
-    memset(position.winner_count, 0, sizeof(position.winner_count));
-
     // 着手点
     int z;
 
@@ -36,19 +22,6 @@ int PlayComputerMove(Position position, UpperConfidenceTree uct, int color, int 
 
     // クリティカルさを表示？
     //PrintCriticality();
-
-    // 秒
-    double sec;
-
-    // 消費時間（秒）？
-    sec = timeMan.GetSpendTime(timeMan.start_time);
-
-    // 情報表示
-    Prt("z=%s,color=%d,moves=%d,playouts=%d, %.1f sec(%.0f po/sec),depth=%d\n",
-        GetCharZ(z), color, position.moves, position.all_playouts, sec, position.all_playouts / sec, depth);
-
-    // 指し手を棋譜に記憶します
-    position.AddMoves(z, color, sec);
 
     return z;
 }

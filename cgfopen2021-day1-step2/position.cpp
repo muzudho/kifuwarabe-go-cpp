@@ -490,3 +490,33 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     }
     return 0;
 }
+
+void Position::ClearBeforeComputerMove()
+{
+    // プレイアウト回数
+    all_playouts = 0;
+
+    // 盤領域をゼロ クリアー？
+    memset(board_area_sum, 0, sizeof(board_area_sum));
+
+    // 盤上の勝ち数をゼロ クリアー？
+    memset(board_winner, 0, sizeof(board_winner));
+
+    // 勝ち数をクリアー？
+    memset(winner_count, 0, sizeof(winner_count));
+}
+
+void Position::AfterComputerMove(int color, int z) {
+    // 秒
+    double sec;
+
+    // 消費時間（秒）？
+    sec = timeMan.GetSpendTime(timeMan.start_time);
+
+    // 情報表示
+    Prt("z=%s,color=%d,moves=%d,playouts=%d, %.1f sec(%.0f po/sec),depth=%d\n",
+        GetCharZ(z), color, moves, all_playouts, sec, all_playouts / sec, depth);
+
+    // 指し手を棋譜に記憶します
+    AddMoves(z, color, sec);
+}

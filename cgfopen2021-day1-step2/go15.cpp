@@ -474,7 +474,9 @@ void GtpLoop()
                 color = 2;
 
             timeMan.SetUpStartTime(position.CountTotalTime());
+            position.ClearBeforeComputerMove();
             z = PlayComputerMove(position, uct, color, kSearchUct);
+            position.AfterComputerMove(color, z);
             SendGtp("= %s\n\n", GetCharZ(z));
         }
         // 石の色と座標を指定しますので、置いてください
