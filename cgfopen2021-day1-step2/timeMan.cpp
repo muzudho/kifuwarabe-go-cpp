@@ -34,9 +34,6 @@ int TimeMan::IsTimeOver()
 
 void TimeMan::SetUpStartTime(double total_time)
 {
-    // 秒
-    double sec;
-
     double base_time = 60 * 10; // 10 minutes
     double left_time = base_time - total_time;
     int div = 12; // 40 ... 13x13, 70 ... 19x19

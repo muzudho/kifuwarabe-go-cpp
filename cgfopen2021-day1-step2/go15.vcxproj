@@ -120,7 +120,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp" />
-    <ClCompile Include="computerMove.cpp" />
     <ClCompile Include="go15.cpp" />
     <ClCompile Include="hashCode.cpp" />
     <ClCompile Include="node.cpp" />
@@ -134,7 +133,6 @@
   <ItemGroup>
     <ClInclude Include="child.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="computerMove.h" />
     <ClInclude Include="go15.h" />
     <ClInclude Include="hashCode.h" />
     <ClInclude Include="node.h" />

@@ -5,9 +5,6 @@ void Selfplay(Position position, UpperConfidenceTree uct)
     // 黒の手番
     int color = 1;
 
-    // 座標
-    int z;
-
     // 探索方法フラグ
     int search;
 
@@ -26,7 +23,25 @@ void Selfplay(Position position, UpperConfidenceTree uct)
         // 次の一手
         timeMan.SetUpStartTime(position.CountTotalTime());
         position.ClearBeforeComputerMove();
-        z = PlayComputerMove(position, uct, color, search);
+
+        // 着手点
+        int z;
+        // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
+        if (0 == Rand64() % 2) // search == kSearchUct
+        {
+            // UCTを使ったゲームプレイ
+            z = uct.GetBestUct(position, color);
+        }
+        else
+        {
+            // 原始モンテカルロでゲームプレイ
+            z = position.PrimitiveMonteCalro(color);
+        }
+
+        // 盤領域を表示？
+        //PrintBoardArea();
+        // クリティカルさを表示？
+        //PrintCriticality();
         position.AfterComputerMove(color, z);
 
         // パスパスなら終局

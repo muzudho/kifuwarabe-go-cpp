@@ -2,7 +2,6 @@
 
 #include "go15.h"
 #include "position.h"
-#include "computerMove.h"
 #include "upperConfidenceTree.h"
 
 /// <summary>
