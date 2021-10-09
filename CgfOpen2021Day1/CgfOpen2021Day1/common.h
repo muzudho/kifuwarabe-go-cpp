@@ -28,18 +28,3 @@ int Get81(int z);
 /// <param name="z">座標</param>
 /// <returns>人が読める形の座標（文字列）</returns>
 char *GetCharZ(int z);
-
-/// <summary>
-/// プリントなんだけれども 標準エラー出力に出してる？
-/// サーバーに出力したくない文字列を表示したいときに使う？
-/// </summary>
-/// <param name="fmt">書式か？</param>
-/// <param name="">可変長引数</param>
-void Prt(const char *fmt, ...);
-
-/// <summary>
-/// Go Text Protocol のコマンドを標準出力に出力します
-/// </summary>
-/// <param name="fmt">書式か？</param>
-/// <param name="">可変長引数</param>
-void SendGtp(const char* fmt, ...);

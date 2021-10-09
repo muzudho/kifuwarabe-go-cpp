@@ -30,29 +30,30 @@ void Position::PrintBoard()
         color = Board[played_z];
     }
 
-    std::cerr << "   " << std::endl;
-
+    // 筋符号のリスト
+    std::cerr << "   ";
     for (x = 0; x < kBoardSize; x++) {
-        std::cerr << ('A' + x + (x > 7)) << std::endl;
+        std::cerr << (char)('A' + x + (x > 7));
     }
-
     std::cerr << std::endl;
 
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
-        std::cerr << std::setw(2) << (kBoardSize - y) << std::endl;
+        // 行見出し
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
 
         for (x = 0; x < kBoardSize; x++)
         {
-            std::cerr << str[Board[GetZ(x + 1, y + 1)]] << std::endl;
+            std::cerr << str[Board[GetZ(x + 1, y + 1)]];
         }
 
         if (y == 4) {
-            std::cerr << "  ko_z=" << GetCharZ(ko_z) << ",moves=" << moves << std::endl;
+            std::cerr << "  ko_z=" << GetCharZ(ko_z) << ",moves=" << moves;
         }
 
         if (y == 7) {
-            std::cerr << "  play_z=" << GetCharZ(played_z) << ", color=" << color << std::endl;
+            std::cerr << "  play_z=" << GetCharZ(played_z) << ", color=" << color;
         }
 
         std::cerr << std::endl;

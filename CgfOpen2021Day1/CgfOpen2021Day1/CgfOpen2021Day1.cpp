@@ -1533,13 +1533,13 @@ void GtpLoop()
         {
             // 無視
             //    int new_board_size = atoi( sa[1] );
-            SendGtp("= \n\n");
+            std::cout << "= " << std::endl << std::endl;
         }
         // 盤を初期化してください
         else if (strstr(sa[0], "clear_board"))
         {
             position.InitBoard();
-            SendGtp("= \n\n");
+            std::cout << "= " << std::endl << std::endl;
         }
         // 思考エンジンを終了してください
         else if (strstr(sa[0], "quit"))
@@ -1549,30 +1549,38 @@ void GtpLoop()
         // GTPプロトコルのバージョンを返してください
         else if (strstr(sa[0], "protocol_version"))
         {
-            SendGtp("= 2\n\n");
+            std::cout << "= 2" << std::endl << std::endl;
         }
         // 思考エンジンの名前を返してください
         else if (strstr(sa[0], "name"))
         {
             // your_program_name
-            SendGtp("= kif\n\n");
+            std::cout << "= kif" << std::endl << std::endl;
         }
         // 思考エンジンのバージョンを返してください
         else if (strstr(sa[0], "version"))
         {
-            SendGtp("= 0.0.1\n\n");
+            std::cout << "= 0.0.1" << std::endl << std::endl;
         }
         // 対応しているコマンドの改行区切りリストを返してください
         else if (strstr(sa[0], "list_commands"))
         {
-            SendGtp("= boardsize\nclear_board\nquit\nprotocol_version\n"
-                "name\nversion\nlist_commands\nkomi\ngenmove\nplay\n\n");
+            std::cout << "= boardsize" << std::endl
+                << "clear_board" << std::endl
+                << "quit" << std::endl
+                << "protocol_version" << std::endl
+                << "name" << std::endl
+                << "version" << std::endl
+                << "list_commands" << std::endl
+                << "komi" << std::endl
+                << "genmove" << std::endl
+                << "play" << std::endl << std::endl;
         }
         // コミを ｘ にしてください
         else if (strstr(sa[0], "komi"))
         {
             position.komi = atof(sa[1]);
-            SendGtp("= \n\n");
+            std::cout << "= " << std::endl << std::endl;
         }
         // あなたが着手する座標を返してください
         else if (strstr(sa[0], "genmove"))
@@ -1582,7 +1590,7 @@ void GtpLoop()
                 color = 2;
 
             z = position.PlayComputerMove(color, kSearchUct);
-            SendGtp("= %s\n\n", GetCharZ(z));
+            std::cout << "= " << GetCharZ(z) << std::endl << std::endl;
         }
         // 石の色と座標を指定しますので、置いてください
         else if (strstr(sa[0], "play"))
@@ -1599,12 +1607,12 @@ void GtpLoop()
             if (tolower(sa[2][0]) == 'p')
                 z = 0; // pass
             position.AddMoves(z, color, 0);
-            SendGtp("= \n\n");
+            std::cout << "= " << std::endl << std::endl;
         }
         // その他のコマンドには未対応です
         else
         {
-            SendGtp("? unknown_command\n\n");
+            std::cout << "? unknown_command" << std::endl << std::endl;
         }
     }
 }
