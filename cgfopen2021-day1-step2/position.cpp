@@ -2,6 +2,28 @@
 #include "position.h"
 #include <stdlib.h>
 
+/// <summary>
+/// 盤の初期化
+/// </summary>
+void Position::InitBoard()
+{
+    int i, x, y;
+
+    // 盤の枠を整えます
+    for (i = 0; i < kBoardMax; i++)
+        Board[i] = 3;
+
+    // 盤上の石をすべて取り除きます
+    for (y = 0; y < kBoardSize; y++)
+        for (x = 0; x < kBoardSize; x++)
+            Board[GetZ(x + 1, y + 1)] = 0;
+
+    // 手数とコウとハッシュコードをクリアーします
+    moves = 0;
+    ko_z = 0;
+    hashCode.hashcode = 0;
+}
+
 void Position::PrintBoard()
 {
     // 筋
