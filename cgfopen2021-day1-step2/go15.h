@@ -28,6 +28,11 @@ const int kFillEyeErr = 1;
 const int kFillEyeOk = 0;
 
 /// <summary>
+/// illegal move
+/// </summary>
+const int kIllegalZ = -1;
+
+/// <summary>
 /// 石の色を反転
 /// </summary>
 /// <param name="col">石の色</param>

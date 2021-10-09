@@ -128,6 +128,7 @@
     <ClCompile Include="selfPlay.cpp" />
     <ClCompile Include="testPlay.cpp" />
     <ClCompile Include="timeMan.cpp" />
+    <ClCompile Include="upperConfidenceTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="child.h" />

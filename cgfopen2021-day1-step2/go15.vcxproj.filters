@@ -42,6 +42,9 @@
     <ClCompile Include="hashCode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="upperConfidenceTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="go15.h">
