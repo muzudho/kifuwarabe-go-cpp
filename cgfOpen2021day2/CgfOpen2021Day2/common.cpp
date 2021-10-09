@@ -59,6 +59,7 @@ char *GetCharZ(int z)
     return buf;
 }
 
+/*
 void Prt(const char *fmt, ...)
 {
     va_list ap;
@@ -69,7 +70,6 @@ void Prt(const char *fmt, ...)
     {
         FILE *fp;
         if (0==fopen_s(&fp, "out.txt", "a")) {
-            // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);
         }
@@ -89,7 +89,6 @@ void SendGtp(const char* fmt, ...)
     {
         FILE* fp;
         if (0==fopen_s(&fp, "out.txt", "a")) {
-            // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);
         }
@@ -98,6 +97,7 @@ void SendGtp(const char* fmt, ...)
     vfprintf(stdout, fmt, ap);
     va_end(ap);
 }
+*/
 
 void PrtCode64(uint64 r)
 {

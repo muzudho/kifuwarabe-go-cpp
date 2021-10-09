@@ -51,8 +51,7 @@ void Position::PrintBoard()
         if (y == 4) {
             std::cerr << "  ko_z=" << GetCharZ(ko_z) << ",moves=" << moves;
         }
-
-        if (y == 7) {
+        else if (y == 7) {
             std::cerr << "  play_z=" << GetCharZ(played_z) << ", color=" << color;
         }
 

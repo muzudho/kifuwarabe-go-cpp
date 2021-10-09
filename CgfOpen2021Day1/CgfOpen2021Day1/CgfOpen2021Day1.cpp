@@ -130,14 +130,17 @@ void Position::PrintBoardArea()
     if (all == 0)
         all = 1;
 
+    // 筋符号のリスト
     std::cerr << "board_area_sum" << std::endl << "   ";
     for (x = 0; x < kBoardSize; x++) {
         std::cerr << "   " << (char)('A' + x + (x > 7));
     }
     std::cerr << std::endl;
 
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
+        // 行見出し
         std::cerr << std::setw(2) << (kBoardSize - y) << " ";
 
         for (x = 0; x < kBoardSize; x++)
@@ -174,20 +177,25 @@ void Position::PrintCriticality()
 {
     int x, y;
 
+    // 筋符号のリスト
     std::cerr << "criticality" << std::endl << "  ";
     for (x = 0; x < kBoardSize; x++) {
         std::cerr << "    " << (char)('A' + x + (x > 7));
     }
     std::cerr << std::endl;
 
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
+        // 行見出し
         std::cerr << std::setw(2) << (kBoardSize - y) << " ";
+
         for (x = 0; x < kBoardSize; x++)
         {
             double crt = GetCriticality(GetZ(x + 1, y + 1));
             std::cerr << std::setw(5) << std::setprecision(2) << crt;
         }
+
         std::cerr << std::endl;
     }
 }
@@ -1191,7 +1199,7 @@ int Position::GetBestUct(int color)
         {
             best_i = i;
             max = c->games;
-        }
+    }
 #if DEBUG
         std::cerr << std::setw(2) << i
             << ":z=" << std::setw(2) << Get81(c->z)
@@ -1346,8 +1354,14 @@ int Position::PlayComputerMove(int color, int search)
     sec = timeMan.GetSpendTime(timeMan.start_time);
 
     // 情報表示
-    std::cerr << "z=" << GetCharZ(z) << ",color=" << color << ",moves=" << moves << ",playouts=" << all_playouts << ", " << std::setprecision(1) << sec << " sec(" << std::setprecision(0)
-        << (all_playouts / sec) << " po/sec),depth=" << depth << std::endl;
+    std::cerr << "z=" << GetCharZ(z)
+        << ",color=" << color
+        << ",moves=" << moves
+        << ",playouts=" << all_playouts
+        << ", " << std::setprecision(1) << sec
+        << " sec(" << std::setprecision(0) << (all_playouts / sec)
+        << " po/sec),depth=" << depth
+        << std::endl;
 
     // 指し手を棋譜に記憶します
     AddMoves(z, color, sec);
@@ -1363,7 +1377,7 @@ void Position::PrintSgf()
     int i;
 
     // ヘッダー出力
-    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]";
+    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]" << std::endl;
 
     // 指し手出力
     for (i = 0; i < moves; i++)
@@ -1379,7 +1393,6 @@ void Position::PrintSgf()
 
         // 色
         const char* sStone[2] = { "B", "W" };
-
         std::cerr << ";" << sStone[i & 1];
 
         // パス
@@ -1389,7 +1402,7 @@ void Position::PrintSgf()
         }
         else
         {
-            std::cerr << "[" << (x + 'a' - 1) << (y + 'a' - 1) << "]";
+            std::cerr << "[" << (char)(x + 'a' - 1) << (char)(y + 'a' - 1) << "]";
         }
 
         // 改行

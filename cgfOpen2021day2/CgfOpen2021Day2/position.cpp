@@ -1,4 +1,6 @@
 ﻿#include "position.h"
+#include <iostream>
+#include <iomanip>
 
 /// <summary>
 /// 盤の初期化
@@ -46,25 +48,32 @@ void Position::PrintBoard()
         color = Board[played_z];
     }
 
-    Prt("   ");
-    //for (x=0;x<kBoardSize;x++) Prt("%d",x+1);
-    for (x = 0; x < kBoardSize; x++)
-        Prt("%c", 'A' + x + (x > 7));
-    Prt("\n");
+    // 筋符号のリスト
+    std::cerr << "   ";
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << (char)('A' + x + (x > 7));
+    }
+    std::cerr << std::endl;
+
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
-        //  Prt("%2d ",y+1);
-        Prt("%2d ", kBoardSize - y);
+        // 行見出し
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
+
         for (x = 0; x < kBoardSize; x++)
         {
-            Prt("%s", str[Board[GetZ(x + 1, y + 1)]]);
+            std::cerr << str[Board[GetZ(x + 1, y + 1)]];
         }
-        if (y == 4)
-            Prt("  ko_z=%s,moves=%d", GetCharZ(ko_z), moves);
-        if (y == 7)
-            Prt("  play_z=%s, color=%d", GetCharZ(played_z), color);
 
-        Prt("\n");
+        if (y == 4) {
+            std::cerr << "  ko_z=" << GetCharZ(ko_z) << ",moves=" << moves;
+        }
+        else if (y == 7) {
+            std::cerr << "  play_z=" << GetCharZ(played_z) << ", color=" << color;
+        }
+
+        std::cerr << std::endl;
     }
 }
 
@@ -75,21 +84,27 @@ void Position::PrintBoardArea()
     if (all == 0)
         all = 1;
 
-    Prt("board_area_sum\n   ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("   %c", 'A' + x + (x > 7));
-    Prt("\n");
+    // 筋符号のリスト
+    std::cerr << "board_area_sum" << std::endl << "   ";
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << "   " << (char)('A' + x + (x > 7));
+    }
+    std::cerr << std::endl;
+
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
-        Prt("%2d ", kBoardSize - y);
+        // 行見出し
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
+
         for (x = 0; x < kBoardSize; x++)
         {
             int sum = board_area_sum[GetZ(x + 1, y + 1)];
             double per = 100.0 * sum / all;
-            Prt("%4.0f", per);
+            std::cerr << std::setw(4) << std::setprecision(0) << per;
         }
 
-        Prt("\n");
+        std::cerr << std::endl;
     }
 }
 
@@ -101,7 +116,7 @@ void Position::AddMoves(int z, int color, double sec)
     // 非合法手なら強制終了
     if (err != 0)
     {
-        Prt("PutStone err=%d\n", err);
+        std::cerr << "PutStone err=" << err << std::endl;
         exit(0);
     }
 
@@ -116,9 +131,9 @@ void Position::AddMoves(int z, int color, double sec)
     PrintBoard();
 
     // ハッシュコード表示
-    Prt("hashcode=");
+    std::cerr << "hashcode=";
     PrtCode64(hashCode.hashcode);
-    Prt("\n");
+    std::cerr << std::endl;
 }
 
 void Position::PrintSgf()
@@ -126,7 +141,7 @@ void Position::PrintSgf()
     int i;
 
     // ヘッダー出力
-    Prt("(;GM[1]SZ[%d]KM[%.1f]PB[]PW[]\n", kBoardSize, komi);
+    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]" << std::endl;
 
     // 指し手出力
     for (i = 0; i < moves; i++)
@@ -142,25 +157,26 @@ void Position::PrintSgf()
 
         // 色
         const char* sStone[2] = { "B", "W" };
-        Prt(";%s", sStone[i & 1]);
+        std::cerr << ";" << sStone[i & 1];
 
         // パス
         if (z == 0)
         {
-            Prt("[]");
+            std::cerr << "[]";
         }
         else
         {
-            Prt("[%c%c]", x + 'a' - 1, y + 'a' - 1);
+            std::cerr << "[" << (char)(x + 'a' - 1) << (char)(y + 'a' - 1) << "]";
         }
 
         // 改行
-        if (((i + 1) % 10) == 0)
-            Prt("\n");
+        if (((i + 1) % 10) == 0) {
+            std::cerr << std::endl;
+        }
     }
 
     // 終端
-    Prt(")\n");
+    std::cerr << ")" << std::endl;
 }
 
 double Position::CountTotalTime()
@@ -299,9 +315,18 @@ int Position::CountScore(int turn_color)
     if (turn_color == 2)
         win = -win;
 
-    //Prt("black_sum=%2d, (stones=%2d, area=%2d)\n",black_sum, kind[1], black_area);
-    //Prt("white_sum=%2d, (stones=%2d, area=%2d)\n",white_sum, kind[2], white_area);
-    //Prt("score=%d, win=%d\n",score, win);
+    // std::cerr << "black_sum=" << std::setw( 2 ) << black_sum
+    //  << ", (stones=" << std::setw( 2 ) << kind[1]
+    //  << ", area=" << std::setw( 2 ) << black_area
+    //  << ")" << std::endl;
+
+    // std::cerr << "white_sum=" <<  std::setw( 2 ) <<  white_sum
+    //  <<  ", (stones=" <<  std::setw( 2 ) <<   kind[2]
+    //  <<  ", area=" <<  std::setw( 2 ) <<  white_area
+    //  <<  ")" << std::endl;
+
+    // std::cerr << "score=" << score
+    //  <<  ", win=" <<  win << std::endl;
     return win;
 }
 
@@ -323,19 +348,26 @@ void Position::PrintCriticality()
 {
     int x, y;
 
-    Prt("criticality\n  ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("    %c", 'A' + x + (x > 7));
-    Prt("\n");
+    // 筋符号のリスト
+    std::cerr << "criticality" << std::endl << "  ";
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << "    " << (char)('A' + x + (x > 7));
+    }
+    std::cerr << std::endl;
+
+    // テーブル
     for (y = 0; y < kBoardSize; y++)
     {
-        Prt("%2d ", kBoardSize - y);
+        // 行見出し
+        std::cerr << std::setw(2) << (kBoardSize - y) << " ";
+
         for (x = 0; x < kBoardSize; x++)
         {
             double crt = GetCriticality(GetZ(x + 1, y + 1));
-            Prt("%5.2f", crt);
+            std::cerr << std::setw(5) << std::setprecision(2) << crt;
         }
-        Prt("\n");
+
+        std::cerr << std::endl;
     }
 }
 
@@ -514,8 +546,14 @@ void Position::AfterComputerMove(int color, int z) {
     sec = timeMan.GetSpendTime(timeMan.start_time);
 
     // 情報表示
-    Prt("z=%s,color=%d,moves=%d,playouts=%d, %.1f sec(%.0f po/sec),depth=%d\n",
-        GetCharZ(z), color, moves, all_playouts, sec, all_playouts / sec, depth);
+    std::cerr << "z=" << GetCharZ(z)
+        << ",color=" << color
+        << ",moves=" << moves
+        << ",playouts=" << all_playouts
+        << ", " << std::setprecision(1) << sec
+        << " sec(" << std::setprecision(0) << (all_playouts / sec)
+        << " po/sec),depth=" << depth
+        << std::endl;
 
     // 指し手を棋譜に記憶します
     AddMoves(z, color, sec);

@@ -1,4 +1,5 @@
 ﻿#include "upperConfidenceTree.h"
+#include <iostream>
 
 void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, double win)
 {
