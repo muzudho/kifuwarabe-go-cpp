@@ -10,7 +10,7 @@ double TimeMan::GetClock()
     struct timezone zone;
     if (gettimeofday(&val, &zone) == -1)
     {
-        Prt("time err\n");
+        std::cerr << "time err" << std::endl;
         exit(0);
     }
     double t = val.tv_sec * 1000.0 + (val.tv_usec / 1000.0);

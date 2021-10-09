@@ -1,5 +1,7 @@
 #include "common.h"
 #include "position.h"
+#include <iostream>
+#include <iomanip>
 
 /// <summary>
 /// 盤の描画
@@ -28,24 +30,31 @@ void Position::PrintBoard()
         color = Board[played_z];
     }
 
-    Prt("   ");
-    //for (x=0;x<kBoardSize;x++) Prt("%d",x+1);
-    for (x = 0; x < kBoardSize; x++)
-        Prt("%c", 'A' + x + (x > 7));
-    Prt("\n");
+    std::cerr << "   " << std::endl;
+
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << ('A' + x + (x > 7)) << std::endl;
+    }
+
+    std::cerr << std::endl;
+
     for (y = 0; y < kBoardSize; y++)
     {
-        //  Prt("%2d ",y+1);
-        Prt("%2d ", kBoardSize - y);
+        std::cerr << std::setw(2) << (kBoardSize - y) << std::endl;
+
         for (x = 0; x < kBoardSize; x++)
         {
-            Prt("%s", str[Board[GetZ(x + 1, y + 1)]]);
+            std::cerr << str[Board[GetZ(x + 1, y + 1)]] << std::endl;
         }
-        if (y == 4)
-            Prt("  ko_z=%s,moves=%d", GetCharZ(ko_z), moves);
-        if (y == 7)
-            Prt("  play_z=%s, color=%d", GetCharZ(played_z), color);
 
-        Prt("\n");
+        if (y == 4) {
+            std::cerr << "  ko_z=" << GetCharZ(ko_z) << ",moves=" << moves << std::endl;
+        }
+
+        if (y == 7) {
+            std::cerr << "  play_z=" << GetCharZ(played_z) << ", color=" << color << std::endl;
+        }
+
+        std::cerr << std::endl;
     }
 }

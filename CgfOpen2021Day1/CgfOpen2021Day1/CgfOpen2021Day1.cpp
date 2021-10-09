@@ -29,6 +29,7 @@
 #include "position.h"
 #include "common.h"
 #include "randXorShift.h"
+#include <iomanip>
 
 Position position = Position();
 
@@ -68,8 +69,7 @@ uint64 hashcode = 0;
 /// <param name="r"></param>
 void PrtCode64(uint64 r)
 {
-    //Prt("%016" PRIx64,r);
-    Prt("%08x%08x", (int)(r >> 32), (int)r);
+    std::cerr << std::hex << (int)(r >> 32) << std::hex << (int)r << std::endl;
 };
 
 /// <summary>
@@ -80,13 +80,14 @@ void MakeHashboard()
     int z, i;
     for (z = 0; z < kBoardMax; z++)
     {
-        //  Prt("[%3d]=",z);
+        // std::cerr << "[" << z << "]=" << std::endl;
         for (i = 0; i < kHashKinds; i++)
         {
             hashboard[z][i] = Rand64();
-            //    PrtCode64(hashboard[z][i]); Prt(",");
+            //    PrtCode64(hashboard[z][i]);
+            // std::cerr << "," << std::endl;
         }
-        //  Prt("\n");
+        // std::cerr << std::endl;
     }
 }
 
@@ -129,21 +130,24 @@ void Position::PrintBoardArea()
     if (all == 0)
         all = 1;
 
-    Prt("board_area_sum\n   ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("   %c", 'A' + x + (x > 7));
-    Prt("\n");
+    std::cerr << "board_area_sum" << std::endl << "   " << std::endl;
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << "   " << ('A' + x + (x > 7)) << std::endl;
+    }
+
+    std::cerr << std::endl;
     for (y = 0; y < kBoardSize; y++)
     {
-        Prt("%2d ", kBoardSize - y);
+        std::cerr << std::setw(2) << (kBoardSize - y) << " " << std::endl;
+
         for (x = 0; x < kBoardSize; x++)
         {
             int sum = board_area_sum[GetZ(x + 1, y + 1)];
             double per = 100.0 * sum / all;
-            Prt("%4.0f", per);
+            std::cerr << std::setw(4) << std::setprecision(0) << per << std::endl;
         }
 
-        Prt("\n");
+        std::cerr << std::endl;
     }
 }
 
@@ -170,19 +174,22 @@ void Position::PrintCriticality()
 {
     int x, y;
 
-    Prt("criticality\n  ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("    %c", 'A' + x + (x > 7));
-    Prt("\n");
+    std::cerr << "criticality" << std::endl << "  " << std::endl;
+
+    for (x = 0; x < kBoardSize; x++) {
+        std::cerr << "    " << ('A' + x + (x > 7)) << std::endl;
+    }
+
+    std::cerr << std::endl;
     for (y = 0; y < kBoardSize; y++)
     {
-        Prt("%2d ", kBoardSize - y);
+        std::cerr << std::setw(2) << (kBoardSize - y) << " " << std::endl;
         for (x = 0; x < kBoardSize; x++)
         {
             double crt = GetCriticality(GetZ(x + 1, y + 1));
-            Prt("%5.2f", crt);
+            std::cerr << std::setw(5) << std::setprecision(2) << crt << std::endl;
         }
-        Prt("\n");
+        std::cerr << std::endl;
     }
 }
 
@@ -536,9 +543,18 @@ int Position::CountScore(int turn_color)
     if (turn_color == 2)
         win = -win;
 
-    //Prt("black_sum=%2d, (stones=%2d, area=%2d)\n",black_sum, kind[1], black_area);
-    //Prt("white_sum=%2d, (stones=%2d, area=%2d)\n",white_sum, kind[2], white_area);
-    //Prt("score=%d, win=%d\n",score, win);
+    // std::cerr << "black_sum=" << std::setw( 2 ) << black_sum
+    //  << ", (stones=" << std::setw( 2 ) << kind[1]
+    //  << ", area=" << std::setw( 2 ) << black_area
+    //  << ")" << std::endl;
+
+    // std::cerr << "white_sum=" <<  std::setw( 2 ) <<  white_sum
+    //  <<  ", (stones=" <<  std::setw( 2 ) <<   kind[2]
+    //  <<  ", area=" <<  std::setw( 2 ) <<  white_area
+    //  <<  ")" << std::endl;
+
+    // std::cerr << "score=" << score
+    //  <<  ", win=" <<  win << std::endl;
     return win;
 }
 
@@ -611,7 +627,10 @@ int Position::Playout(int turn_color)
                 }
                 if (i == empty_num)
                 {
-                    Prt("Err! prob_sum=%d,sum=%d,r=%d,r=%d\n", prob_sum, sum, r, i);
+                    std::cerr << "Err! prob_sum=" << prob_sum
+                        << ",sum=" << sum
+                        << ",r=" << r
+                        << ",r=" << i << std::endl;
                     exit(0);
                 }
                 z = empty[i][0];
@@ -641,7 +660,11 @@ int Position::Playout(int turn_color)
 
         // そうでなければ盤を表示して手番を変えて続行
         previous_z = z;
-        //  Prt("loop=%d,z=%s,c=%d,empty_num=%d,ko_z=%d\n",loop,GetCharZ(z),color,empty_num,ko_z);
+        // std::cerr << "loop=" << loop
+        //  << ",z=" << GetCharZ(z)
+        //  << ",c=" << color
+        //  << ",empty_num=" << empty_num
+        //  << ",ko_z=" << ko_z << std::endl;
 
         // 手番を反転
         color = FlipColor(color);
@@ -736,14 +759,18 @@ int Position::PrimitiveMonteCalro(int color)
             // 勝率
             win_rate = (double)win_sum / try_num;
             //  PrintBoard();
-            //  Prt("z=%d,win=%5.3f\n",Get81(z),win_rate);
+            // std::cerr << "z=" << Get81(z) 
+            // << ",win=" <<  std::setw( 5 ) << std::setprecision( 3 ) << win_rate << std::endl;
 
             // 最善手の更新
             if (win_rate > best_value)
             {
                 best_value = win_rate;
                 best_z = z;
-                //    Prt("best_z=%d,color=%d,v=%5.3f,try_num=%d\n",Get81(best_z),color,best_value,try_num);
+                // std::cerr << "best_z=" << Get81(best_z)
+                //  << ",color=" << color
+                //  << ",v=" << std::setw( 5 ) << std::setprecision( 3 ) << best_value
+                //  << ",try_num=" try_num << std::endl;
             }
 
             // コウの復元
@@ -793,7 +820,7 @@ int UpperConfidenceTree::CreateNode(int prev_z)
     // これ以上増やせません
     if (node_num == kNodeMax)
     {
-        Prt("nodeList over Err\n");
+        std::cerr << "nodeList over Err" << std::endl;
         exit(0);
     }
 
@@ -899,7 +926,16 @@ int UpperConfidenceTree::SelectBestUcb(int node_n, int color)
             ucb = c->rate + C * sqrt(log((double)pN->child_games_sum) / c->games);
 
             ucb_rave = beta * rave + (1 - beta) * ucb;
-            //    if ( depth==0 ) Prt("%2d:z=%2d,rate=%6.3f,games=%4d, rave_r=%6.3f,g=%4d, beta=%f,ucb_rave=%f\n", i, Get81(c->z), c->rate, c->games, c->rave_rate, c->rave_games,beta,ucb_rave);
+            // if ( depth==0 ) {
+            // std::cerr << std::setw(2) << i
+            //  << ":z=" << std::setw(2) << Get81(c->z)
+            //  << ",rate=" << std::setw(6) << std::setprecision(3) << c->rate
+            //  << ",games=" << std::setw(4) << c->games
+            //  << ", rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
+            //  << ",g=" << c->rave_games
+            //  << ", beta=" << beta
+            //  << ",ucb_rave=" << ucb_rave << std::endl;
+            // }
         }
 
         // UCB値の最大を更新
@@ -913,7 +949,7 @@ int UpperConfidenceTree::SelectBestUcb(int node_n, int color)
     // 1手も選ばれなかったらエラーなので強制終了
     if (select == -1)
     {
-        Prt("Err! select\n");
+        std::cerr << "Err! select" << std::endl;
         exit(0);
     }
 
@@ -1158,16 +1194,22 @@ int Position::GetBestUct(int color)
             max = c->games;
         }
 #if DEBUG
-        Prt("%2d:z=%2d,rate=%6.3f,games=%4d, rave_r=%6.3f,g=%4d\n",
-            i, Get81(c->z), c->rate, c->games, c->rave_rate, c->rave_games);
+        std::cerr << i << ":z=" << std::setw(2) << Get81(c->z)
+            << ",rate=" << std::setw(6) << std::setprecision(3) << c->rate
+            << ",games=" << std::setw(4) << c->games
+            << ",rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
+            << ",g=" << std::setw(4) << c->rave_games << std::endl;
 #endif
     }
 
     // ベストなノードの座標
     best_z = pN->children[best_i].z;
 #if DEBUG
-    Prt("best_z=%d,rate=%6.3f,games=%4d,playouts=%d,nodes=%d\n",
-        Get81(best_z), pN->children[best_i].rate, max, all_playouts, uct.node_num);
+    std::cerr << "best_z=" << Get81(best_z)
+        << ",rate=" << std::setw(6) << std::setprecision(3) << pN->children[best_i].rate
+        << ",games=" << std::setw(4) << max
+        << ",playouts=" << all_playouts
+        << ",nodes=" << uct.node_num << std::endl;
 #endif
 
     return best_z;
@@ -1208,7 +1250,7 @@ void Position::AddMoves(int z, int color, double sec)
     // 非合法手なら強制終了
     if (err != 0)
     {
-        Prt("PutStone err=%d\n", err);
+        std::cerr << "PutStone err=" << err << std::endl;
         exit(0);
     }
 
@@ -1223,9 +1265,9 @@ void Position::AddMoves(int z, int color, double sec)
     PrintBoard();
 
     // ハッシュコード表示
-    Prt("hashcode=");
+    std::cerr << "hashcode=" << std::endl;
     PrtCode64(hashcode);
-    Prt("\n");
+    std::cerr << std::endl;
 }
 
 /// <summary>
@@ -1263,7 +1305,9 @@ int Position::PlayComputerMove(int color, int search)
         timeMan.time_limit_sec = 1.0;
     if (left_time < 20)
         timeMan.time_limit_sec = 0.2;
-    Prt("time_limit_sec=%.1f, total=%.1f, left=%.1f\n", timeMan.time_limit_sec, total_time, left_time);
+
+    std::cerr << "time_limit_sec=" << std::setprecision(1) << timeMan.time_limit_sec
+        << ", total=" << std::setprecision(1) << total_time << ", left=" << std::setprecision(1) << left_time << std::endl;
 
     // 開始時刻
     timeMan.start_time = timeMan.GetClock();
@@ -1302,8 +1346,8 @@ int Position::PlayComputerMove(int color, int search)
     sec = timeMan.GetSpendTime(timeMan.start_time);
 
     // 情報表示
-    Prt("z=%s,color=%d,moves=%d,playouts=%d, %.1f sec(%.0f po/sec),depth=%d\n",
-        GetCharZ(z), color, moves, all_playouts, sec, all_playouts / sec, depth);
+    std::cerr << "z=" << GetCharZ(z) << ",color=" << color << ",moves=" << moves << ",playouts=" << all_playouts << ", " << std::setprecision(1) << sec << " sec(" << std::setprecision(0)
+        << (all_playouts / sec) << " po/sec),depth=" << depth << std::endl;
 
     // 指し手を棋譜に記憶します
     AddMoves(z, color, sec);
@@ -1319,7 +1363,7 @@ void Position::PrintSgf()
     int i;
 
     // ヘッダー出力
-    Prt("(;GM[1]SZ[%d]KM[%.1f]PB[]PW[]\n", kBoardSize, komi);
+    std::cerr << "(;GM[1]SZ[" << kBoardSize << "]KM[" << std::setprecision(1) << komi << "]PB[]PW[]" << std::endl;
 
     // 指し手出力
     for (i = 0; i < moves; i++)
@@ -1335,25 +1379,27 @@ void Position::PrintSgf()
 
         // 色
         const char* sStone[2] = { "B", "W" };
-        Prt(";%s", sStone[i & 1]);
+
+        std::cerr << ";" << sStone[i & 1] << std::endl;
 
         // パス
         if (z == 0)
         {
-            Prt("[]");
+            std::cerr << "[]" << std::endl;
         }
         else
         {
-            Prt("[%c%c]", x + 'a' - 1, y + 'a' - 1);
+            std::cerr << "[" << (x + 'a' - 1) << (y + 'a' - 1) << "]" << std::endl;
         }
 
         // 改行
-        if (((i + 1) % 10) == 0)
-            Prt("\n");
+        if (((i + 1) % 10) == 0) {
+            std::cerr << std::endl;
+        }
     }
 
     // 終端
-    Prt(")\n");
+    std::cerr << ")" << std::endl;
 }
 
 /// <summary>
@@ -1455,7 +1501,7 @@ void GtpLoop()
         if (fgets(str, kStrMax, stdin) == NULL)
             break;
 
-        Prt("gtp<-%s", str);
+        std::cerr << "gtp<-" << str << std::endl;
 
         // 文字列のスプリットをして、結果を sa配列に格納しています
         count = 0;

@@ -23,7 +23,7 @@ int Get81(int z);
 /// 同じ命令文で2回呼び出さないでください。
 /// don't call twice in same sentence.
 ///
-/// like Prt("z0=%s,z1=%s\n",GetCharZ(z0),GetCharZ(z1));
+/// like std::cerr << "z0=" << GetCharZ(z0) << ",z1=" << GetCharZ(z1) << std::endl;
 /// </summary>
 /// <param name="z">座標</param>
 /// <returns>人が読める形の座標（文字列）</returns>

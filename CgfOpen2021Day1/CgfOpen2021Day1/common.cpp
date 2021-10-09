@@ -70,7 +70,6 @@ void Prt(const char *fmt, ...)
         // if ( fp ) {
         FILE* fp;
         if (0 == fopen_s(&fp, "out.txt", "a")) {
-            // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);
         }
@@ -82,6 +81,7 @@ void Prt(const char *fmt, ...)
 
 void SendGtp(const char* fmt, ...)
 {
+    // 可変長引数のリスト 使用開始
     va_list ap;
 
     va_start(ap, fmt);
@@ -92,12 +92,13 @@ void SendGtp(const char* fmt, ...)
         // if (fp) {
         FILE* fp;
         if (0 == fopen_s(&fp, "out.txt", "a")) {
-            // vfprt( fp, fmt, ap );
             vfprintf(fp, fmt, ap);
             fclose(fp);
         }
     }
 
     vfprintf(stdout, fmt, ap);
+
+    // 可変長の引数のリスト 使用終了
     va_end(ap);
 }
