@@ -526,21 +526,67 @@ void GtpLoop()
             position.ClearBeforeComputerMove();
 
             // 着手点
-            int z;
-            // 天元が空いていたら天元に打ちます
-            if(kBoardSize == 19 && position.Board[10*kWidth+10+1+kWidth]==0) {
-                z = 10*kWidth+10;
+            int z = 0;
+            if(kBoardSize == 19) {
+                const int topLeftStar = GetZ(4, 4);
+                const int topStar = GetZ(10, 4);
+                const int topRightStar = GetZ(16, 4);
+                const int leftStar = GetZ(4, 10);
+                const int centerStarZ = GetZ(10, 10);
+                const int rightStar = GetZ(16, 10);
+                const int bottomLeftStar = GetZ(4, 16);
+                const int bottomStar = GetZ(10, 16);
+                const int bottomRightStar = GetZ(16, 16);
+                // 天元が空いていたら天元に打ちます（目に打たないように適当に右隣も空であることを確認します）
+                if (position.Board[centerStarZ] == 0 && position.Board[centerStarZ + 1] == 0) {
+                    z = centerStarZ;
+                }
+                // 右上の星
+                else if (position.Board[topRightStar] == 0 && position.Board[topRightStar + 1] == 0) {
+                    z = topRightStar;
+                }
+                // 左下の星
+                else if (position.Board[bottomLeftStar] == 0 && position.Board[bottomLeftStar + 1] == 0) {
+                    z = bottomLeftStar;
+                }
+                // 左上の星
+                else if (position.Board[topLeftStar] == 0 && position.Board[topLeftStar + 1] == 0) {
+                    z = topLeftStar;
+                }
+                // 右下の星
+                else if (position.Board[bottomRightStar] == 0 && position.Board[bottomRightStar + 1] == 0) {
+                    z = bottomRightStar;
+                }
+                // 上の星
+                else if (position.Board[topStar] == 0 && position.Board[topStar + 1] == 0) {
+                    z = topStar;
+                }
+                // 下の星
+                else if (position.Board[bottomStar] == 0 && position.Board[bottomStar + 1] == 0) {
+                    z = bottomStar;
+                }
+                // 右の星
+                else if (position.Board[rightStar] == 0 && position.Board[rightStar + 1] == 0) {
+                    z = rightStar;
+                }
+                // 左の星
+                else if (position.Board[leftStar] == 0 && position.Board[leftStar + 1] == 0) {
+                    z = leftStar;
+                }
             }
-            // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
-            else if (0 == Rand64() % 2) // search == kSearchUct
-            {
-                // UCTを使ったゲームプレイ
-                z = uct.GetBestUct(position, color);
-            }
-            else
-            {
-                // 原始モンテカルロでゲームプレイ
-                z = position.PrimitiveMonteCalro(color);
+
+            if (z == 0) {
+                // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
+                if (0 == Rand64() % 2) // search == kSearchUct
+                {
+                    // UCTを使ったゲームプレイ
+                    z = uct.GetBestUct(position, color);
+                }
+                else
+                {
+                    // 原始モンテカルロでゲームプレイ
+                    z = position.PrimitiveMonteCalro(color);
+                }
             }
 
             // 盤領域を表示？
