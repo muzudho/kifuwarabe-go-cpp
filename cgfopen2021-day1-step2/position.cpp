@@ -2,9 +2,6 @@
 #include "position.h"
 #include <stdlib.h>
 
-/// <summary>
-/// 盤の描画
-/// </summary>
 void Position::PrintBoard()
 {
     // 筋
@@ -46,6 +43,31 @@ void Position::PrintBoard()
             Prt("  ko_z=%s,moves=%d", GetCharZ(ko_z), moves);
         if (y == 7)
             Prt("  play_z=%s, color=%d", GetCharZ(played_z), color);
+
+        Prt("\n");
+    }
+}
+
+void Position::PrintBoardArea()
+{
+    int x, y;
+    int all = all_playouts;
+    if (all == 0)
+        all = 1;
+
+    Prt("board_area_sum\n   ");
+    for (x = 0; x < kBoardSize; x++)
+        Prt("   %c", 'A' + x + (x > 7));
+    Prt("\n");
+    for (y = 0; y < kBoardSize; y++)
+    {
+        Prt("%2d ", kBoardSize - y);
+        for (x = 0; x < kBoardSize; x++)
+        {
+            int sum = board_area_sum[GetZ(x + 1, y + 1)];
+            double per = 100.0 * sum / all;
+            Prt("%4.0f", per);
+        }
 
         Prt("\n");
     }

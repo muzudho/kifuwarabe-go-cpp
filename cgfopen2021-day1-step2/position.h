@@ -108,7 +108,14 @@ public:
         hashCode = HashCode();
     }
 
+    /// <summary>
+    /// 盤の描画
+    /// </summary>
     void PrintBoard();
+
+    /// <summary>
+    /// 盤領域を 標準エラー出力へ出力？
+    /// </summary>
     void PrintBoardArea();
 
     /// <summary>

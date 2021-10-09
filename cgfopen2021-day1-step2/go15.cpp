@@ -19,41 +19,15 @@ Position position = Position();
 
 /// <summary>
 /// UCTで使われる経路（パス）
+/// プレイアウトでも使う
 /// </summary>
 int path[kDMax];
 
 /// <summary>
 /// UCTで使われる経路（パス）の先頭がらn番目(0開始)
+/// プレイアウトでも使う
 /// </summary>
 int depth;
-
-/// <summary>
-/// 盤領域を 標準エラー出力へ出力？
-/// </summary>
-void Position::PrintBoardArea()
-{
-    int x, y;
-    int all = all_playouts;
-    if (all == 0)
-        all = 1;
-
-    Prt("board_area_sum\n   ");
-    for (x = 0; x < kBoardSize; x++)
-        Prt("   %c", 'A' + x + (x > 7));
-    Prt("\n");
-    for (y = 0; y < kBoardSize; y++)
-    {
-        Prt("%2d ", kBoardSize - y);
-        for (x = 0; x < kBoardSize; x++)
-        {
-            int sum = board_area_sum[GetZ(x + 1, y + 1)];
-            double per = 100.0 * sum / all;
-            Prt("%4.0f", per);
-        }
-
-        Prt("\n");
-    }
-}
 
 /// <summary>
 /// count_liberty関数の中で呼び出されます。再帰
