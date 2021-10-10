@@ -299,7 +299,8 @@ void GtpLoop()
                 // Takahashi: ２つ使うと石の上に石置くかも？
                 // Takahashi: UCT使うと石の上に石を置いた
                 // Takahashi: 原始モンテカルロでも 石の上に石を置いた
-                if (0 == Rand64() % 4) // search == kSearchUct
+                // 0 == Rand64() % 4
+                if (true) // search == kSearchUct
                 {
                     // UCTを使ったゲームプレイ
                     std::cerr << "Use uct." << std::endl;

@@ -1,13 +1,11 @@
 ﻿#include "upperConfidenceTree.h"
 #include <iostream>
+#include "playerColorBoard.h"
 
 extern Position position;
 
 void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, double win)
 {
-    // 盤面の各交点の手番の色？
-    int played_color[kBoardMax];
-
     // ループ カウンター
     int i;
 
@@ -17,8 +15,11 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
     // 手番の色
     int c = color;
 
+    // 盤面の各交点の手番の色？
+    PlayerColorBoard player_color_board = PlayerColorBoard();
+    // int played_color[kBoardMax];
     // ゼロ クリアーした？
-    memset(played_color, 0, sizeof(played_color));
+    // memset(player_color_board.played_color, 0, sizeof(player_color_board.played_color));
 
     // 経路の残りの負荷さについて
     for (i = current_depth; i < depth; i++)
@@ -27,8 +28,8 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
         z = path[i];
 
         // 記録がなければ上書き
-        if (played_color[z] == 0) {
-            played_color[z] = c;
+        if (player_color_board.IsEmpty(z)) {
+            player_color_board.SetColor(z, c);
         }
 
         // 手番の色交代
@@ -37,7 +38,7 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
 
     // パスはゼロ クリアー
     // ignore pass
-    played_color[0] = 0;
+    player_color_board.SetColor(0, 0);
 
     // すべての子ノードについて
     for (i = 0; i < pN->child_num; i++)
@@ -51,7 +52,7 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
         }
 
         // 相手の色なら無視
-        if (played_color[c->z] != color) {
+        if (player_color_board.played_color[c->z] != color) {
             continue;
         }
 

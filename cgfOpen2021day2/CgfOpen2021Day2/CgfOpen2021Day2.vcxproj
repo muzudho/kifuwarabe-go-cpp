@@ -144,6 +144,7 @@
     <ClCompile Include="hashCode.cpp" />
     <ClCompile Include="liberty.cpp" />
     <ClCompile Include="node.cpp" />
+    <ClCompile Include="playerColorBoard.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="randXorShift.cpp" />
     <ClCompile Include="selfPlay.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="hashCode.h" />
     <ClInclude Include="liberty.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="playerColorBoard.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="randXorShift.h" />
     <ClInclude Include="Resource.h" />
