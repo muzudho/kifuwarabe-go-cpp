@@ -75,12 +75,14 @@ int Position::Playout(int turn_color)
         int prob_sum = 0;
         // 壁を除く盤上の全ての空点の(座標,確率)を empty配列にセットします
         int x, y, z, err, pr;
-        for (y = 0; y < kBoardSize; y++)
+        for (y = 0; y < kBoardSize; y++) {
             for (x = 0; x < kBoardSize; x++)
             {
                 int z = GetZ(x + 1, y + 1);
-                if (Board[z] != 0)
+                if (Board[z] != 0) {
                     continue;
+                }
+
                 empty[empty_num][0] = z;
                 // 空点を選ぶ確率？
                 pr = 100;
@@ -89,6 +91,7 @@ int Position::Playout(int turn_color)
                 prob_sum += pr;
                 empty_num++;
             }
+        }
 
         for (;;)
         {
@@ -109,6 +112,7 @@ int Position::Playout(int turn_color)
                     if (sum > r)
                         break;
                 }
+
                 if (i == empty_num)
                 {
                     std::cerr << "Err! prob_sum=" << prob_sum
@@ -119,9 +123,12 @@ int Position::Playout(int turn_color)
                 }
                 z = empty[i][0];
             }
+
             err = PutStone(z, color, kFillEyeErr);
-            if (err == 0)
+
+            if (err == 0) {
                 break; // pass is ok.
+            }
 
             // もし空点に石を置くと正常終了しなかったなら、残りの座標で続行します
             prob_sum -= empty[i][1];
@@ -131,16 +138,19 @@ int Position::Playout(int turn_color)
         }
 
         // テストでプレイアウトするのなら、棋譜に手を記録します
-        if (flag_test_playout)
+        if (flag_test_playout) {
             record[moves++] = z;
+        }
 
         // 経路（パス）の深さに配列サイズ上まだ余裕があれば、着手点を記憶します
-        if (depth < kDMax)
+        if (depth < kDMax) {
             path[depth++] = z;
+        }
 
         // もしパスが連続したら対局終了
-        if (z == 0 && previous_z == 0)
+        if (z == 0 && previous_z == 0) {
             break; // continuous pass
+        }
 
         // そうでなければ盤を表示して手番を変えて続行
         previous_z = z;
@@ -166,8 +176,9 @@ int Position::PrimitiveMonteCalro(int color)
 {
     // Takahashi: 消費時間を短縮したい。でも6秒だとペンキ塗りしてしまう。
     // Takahashi: 8でちょうどいいかと思ったが、石の上に石を置いたかもしれないので、もう少し長めにする。
+    // Takahashi: 20だと 持ち時間 30分でちょうど良さそうだが、それでも石の上に石を置いた。
     // number of playout
-    int try_num = 20; // 30;
+    int try_num = 15; // 30;
 
     // 最善手の着手点
     int best_z = 0;
@@ -232,16 +243,15 @@ int Position::PrimitiveMonteCalro(int color)
             {
                 // 現局面を退避
                 int board_copy2[kBoardMax];
-                int ko_z_copy2 = ko_z;
-                memcpy(board_copy2, Board, sizeof(Board));
+                int ko_z_copy2;
+                BackupCurrent(board_copy2, &ko_z_copy2);
 
                 // プレイアウト
                 win = -Playout(FlipColor(color));
                 win_sum += win;
 
                 // 現局面に復元
-                ko_z = ko_z_copy2;
-                memcpy(Board, board_copy2, sizeof(Board));
+                RestoreCurrent(board_copy2, &ko_z_copy2);
             }
 
             // 勝率

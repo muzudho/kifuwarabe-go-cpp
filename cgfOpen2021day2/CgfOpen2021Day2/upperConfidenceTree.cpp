@@ -260,7 +260,6 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
         // 現図を退避
         int board_copy[kBoardMax];
         int ko_z_copy;
-
         position.BackupCurrent(board_copy, &ko_z_copy);
 
         // 経路の深さを初期化
