@@ -419,8 +419,9 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     // pass
     if (tz == 0)
     {
-        if (ko_z != 0)
+        if (ko_z != 0) {
             hashCode.HashXor(ko_z, kHashKo);
+        }
 
         ko_z = 0;
         hashCode.HashPass();
@@ -438,16 +439,19 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
         c = Board[z]; // color
 
         // もし、隣が空点なら
-        if (c == 0)
+        if (c == 0) {
             space++;
+        }
 
         // もし、隣が壁なら
-        if (c == 3)
+        if (c == 3) {
             wall++;
+        }
 
         // もし、隣が空点または壁なら
-        if (c == 0 || c == 3)
+        if (c == 0 || c == 3) {
             continue;
+        }
 
         // 呼吸点の数と、連の石の数を数えます
         libertyClass.CountLiberty(z, &liberty, &stone);
@@ -506,8 +510,9 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
     hashCode.HashPass();
 
     // コウであれば、コウの場所のビット列の 0,1 をひっくり返している？
-    if (ko_z != 0)
+    if (ko_z != 0) {
         hashCode.HashXor(ko_z, kHashKo);
+    }
 
     // 着手点を含む連の呼吸点の数を数えます
     libertyClass.CountLiberty(tz, &liberty, &stone);
@@ -540,7 +545,7 @@ void Position::ClearBeforeComputerMove()
     memset(winner_count, 0, sizeof(winner_count));
 }
 
-void Position::AfterComputerMove(int color, int z) {
+void Position::SetUpExpendTime(int color, int z) {
     // 秒
     double sec;
 

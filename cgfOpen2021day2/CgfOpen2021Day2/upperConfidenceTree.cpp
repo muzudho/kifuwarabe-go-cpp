@@ -25,8 +25,9 @@ void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, dou
         z = path[i];
 
         // 記録がなければ上書き
-        if (played_color[z] == 0)
+        if (played_color[z] == 0) {
             played_color[z] = c;
+        }
 
         // 手番の色交代
         c = FlipColor(c);
@@ -43,12 +44,14 @@ void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, dou
         Child *c = &pN->children[i];
 
         // 非合法手は無視
-        if (c->z == kIllegalZ)
+        if (c->z == kIllegalZ) {
             continue;
+        }
 
         // 相手の色なら無視
-        if (played_color[c->z] != color)
+        if (played_color[c->z] != color) {
             continue;
+        }
 
         // レーブ率の再計算？
         c->rave_rate = (c->rave_games * c->rave_rate + win) / (c->rave_games + 1);
@@ -86,8 +89,9 @@ int UpperConfidenceTree::SearchUct(Position position, int color, int node_n)
         err = position.PutStone(z, color, kFillEyeErr);
 
         // 合法手ならループを抜けます
-        if (err == 0)
+        if (err == 0) {
             break;
+        }
 
         // 非合法手なら、 kIllegalZ をセットして ループをやり直し
         // select other move
@@ -166,7 +170,9 @@ int UpperConfidenceTree::SelectBestUcb(int node_n, int color)
 
         // 非合法手の座標なら無視
         if (c->z == kIllegalZ)
+        {
             continue;
+        }
 
         // 試した回数が 0 のとき
         if (c->games == 0)

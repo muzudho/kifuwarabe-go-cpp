@@ -42,7 +42,7 @@ void Selfplay(Position position, UpperConfidenceTree uct)
         //PrintBoardArea();
         // クリティカルさを表示？
         //PrintCriticality();
-        position.AfterComputerMove(color, z);
+        position.SetUpExpendTime(color, z);
 
         // パスパスなら終局
         if (z == 0 && position.moves > 1 && position.record[position.moves - 2] == 0)

@@ -165,9 +165,9 @@ int Position::Playout(int turn_color)
 int Position::PrimitiveMonteCalro(int color)
 {
     // Takahashi: 消費時間を短縮したい。でも6秒だとペンキ塗りしてしまう。
-    // Takahashi: 8でちょうどいいかと思ったが、石の上に石を置いたかもしれないので、もう少し長めに 10 にする。
+    // Takahashi: 8でちょうどいいかと思ったが、石の上に石を置いたかもしれないので、もう少し長めにする。
     // number of playout
-    int try_num = 10; // 30;
+    int try_num = 20; // 30;
 
     // 最善手の着手点
     int best_z = 0;
@@ -500,6 +500,16 @@ void GtpLoop()
                 const int middleBottomLeftStar = GetZ(7, 13);
                 const int middleBottomRightStar = GetZ(13, 13);
                 //
+                // 決め打ち
+                const int pattern_step1 = GetZ(7, 4);
+                const int pattern_step2 = GetZ(13, 4);
+                const int pattern_step3 = GetZ(16, 7);
+                const int pattern_step4 = GetZ(16, 14);
+                const int pattern_step5 = GetZ(13, 16);
+                const int pattern_step6 = GetZ(7, 16);
+                const int pattern_step7 = GetZ(4, 13);
+                const int pattern_step8 = GetZ(4, 7);
+                // 
                 // 天元が空いていたら天元に打ちます（目に打たないように適当に右隣も空であることを確認します）
                 if (position.Board[centerStarZ] == 0 && position.Board[centerStarZ + 1] == 0) {
                     z = centerStarZ;
@@ -552,6 +562,38 @@ void GtpLoop()
                 else if (position.Board[middleBottomRightStar] == 0 && position.Board[middleBottomRightStar + 1] == 0) {
                     z = middleBottomRightStar;
                 }
+                // パターン1
+                else if (position.Board[pattern_step1] == 0 && position.Board[pattern_step1 + 1] == 0) {
+                    z = pattern_step1;
+                }
+                // パターン2
+                else if (position.Board[pattern_step2] == 0 && position.Board[pattern_step2 + 1] == 0) {
+                    z = pattern_step2;
+                }
+                // パターン3
+                else if (position.Board[pattern_step3] == 0 && position.Board[pattern_step3 + 1] == 0) {
+                    z = pattern_step3;
+                }
+                // パターン4
+                else if (position.Board[pattern_step4] == 0 && position.Board[pattern_step4 + 1] == 0) {
+                    z = pattern_step4;
+                }
+                // パターン5
+                else if (position.Board[pattern_step5] == 0 && position.Board[pattern_step5 + 1] == 0) {
+                    z = pattern_step5;
+                }
+                // パターン6
+                else if (position.Board[pattern_step6] == 0 && position.Board[pattern_step6 + 1] == 0) {
+                    z = pattern_step6;
+                }
+                // パターン7
+                else if (position.Board[pattern_step7] == 0 && position.Board[pattern_step7 + 1] == 0) {
+                    z = pattern_step7;
+                }
+                // パターン8
+                else if (position.Board[pattern_step8] == 0 && position.Board[pattern_step8 + 1] == 0) {
+                    z = pattern_step8;
+                }
             }
 
             if (z == 0) {
@@ -579,7 +621,7 @@ void GtpLoop()
             //PrintBoardArea();
             // クリティカルさを表示？
             //PrintCriticality();
-            position.AfterComputerMove(color, z);
+            position.SetUpExpendTime(color, z);
             std::cout << "= " << GetCharZ(z) << std::endl << std::endl;
         }
         // 石の色と座標を指定しますので、置いてください

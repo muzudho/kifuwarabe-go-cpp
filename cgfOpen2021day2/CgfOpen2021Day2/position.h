@@ -196,5 +196,11 @@ public:
     void PrintSgf();
 
     void ClearBeforeComputerMove();
-    void AfterComputerMove(int color, int z);
+
+    /// <summary>
+    /// 消費時間を棋譜に記録します
+    /// </summary>
+    /// <param name="color"></param>
+    /// <param name="z"></param>
+    void SetUpExpendTime(int color, int z);
 };
