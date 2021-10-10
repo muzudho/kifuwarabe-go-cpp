@@ -207,14 +207,13 @@ int Position::PrimitiveMonteCalro(int color)
     // 手番が勝ったら1、負けたら0
     int win;
 
-    // コウの座標のコピー
-    int ko_z_copy;
 
     // 盤のコピー
     // keep current board
     int board_copy[kBoardMax];
-    ko_z_copy = ko_z;
-    memcpy(board_copy, Board, sizeof(Board));
+    // コウの座標のコピー
+    int ko_z_copy;
+    BackupCurrent(board_copy, &ko_z_copy);
 
     // 根ノードでは最低-100点から
     best_value = -100;
@@ -271,11 +270,12 @@ int Position::PrimitiveMonteCalro(int color)
                 //  << ",try_num=" try_num << std::endl;
             }
 
-            // コウの復元
-            ko_z = ko_z_copy;
-            // 盤の復元
-            memcpy(Board, board_copy, sizeof(Board)); // resume board
+            // 復元
+            // RestoreCurrent(board_copy, &ko_z_copy);
         }
+
+    // Takahashi: 追加
+    RestoreCurrent(board_copy, &ko_z_copy);
 
     return best_z;
 }
@@ -610,21 +610,20 @@ void GtpLoop()
                 // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
                 // Takahashi: ２つ使うと石の上に石置くかも？
                 // Takahashi: UCT使うと石の上に石を置いた
-                /*
-                //if (0 == Rand64() % 4) // search == kSearchUct
-                //{
+                // Takahashi: 原始モンテカルロでも 石の上に石を置いた
+                if (0 == Rand64() % 4) // search == kSearchUct
+                {
                     // UCTを使ったゲームプレイ
-                std::cerr << "Use uct." << std::endl;
-                z = uct.GetBestUct(position, color);
+                    std::cerr << "Use uct." << std::endl;
+                    z = uct.GetBestUct(position, color);
                 }
                 else
                 {
-                */
-                // 原始モンテカルロでも２３秒ぐらいかかってしまう
-                // 原始モンテカルロでゲームプレイ
-                std::cerr << "Use primitive monte calro." << std::endl;
-                z = position.PrimitiveMonteCalro(color);
-                //}
+                    // 原始モンテカルロでも２３秒ぐらいかかってしまう
+                    // 原始モンテカルロでゲームプレイ
+                    std::cerr << "Use primitive monte calro." << std::endl;
+                    z = position.PrimitiveMonteCalro(color);
+                }
             }
 
             // 盤領域を表示？
