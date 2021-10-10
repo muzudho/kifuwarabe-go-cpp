@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="child.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="commonLevel2.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="go15.h" />
     <ClInclude Include="hashCode.h" />

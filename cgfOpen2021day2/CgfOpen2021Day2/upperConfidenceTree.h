@@ -4,6 +4,7 @@
 #include <string.h> // memset()
 #include "common.h"
 #include "node.h"
+#include "position.h"
 
 /// <summary>
 /// 最大10000局面まで
