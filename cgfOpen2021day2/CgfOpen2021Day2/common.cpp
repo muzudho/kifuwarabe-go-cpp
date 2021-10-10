@@ -50,8 +50,9 @@ char *GetCharZ(int z)
     ax = x - 1 + 'A';
 
     // 筋に I列は無いので詰めます
-    if (ax >= 'I')
+    if (ax >= 'I') {
         ax++; // from 'A' to 'T', excluding 'I'
+    }
 
     // sprintf(buf, "%c%d", ax, kBoardSize + 1 - y);
     sprintf_s(buf, "%c%d", ax, kBoardSize + 1 - y);

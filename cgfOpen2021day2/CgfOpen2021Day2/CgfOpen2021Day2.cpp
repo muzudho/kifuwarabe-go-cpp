@@ -494,6 +494,12 @@ void GtpLoop()
                 const int bottomLeftStar = GetZ(4, 16);
                 const int bottomStar = GetZ(10, 16);
                 const int bottomRightStar = GetZ(16, 16);
+                //
+                const int middleTopLeftStar = GetZ(7, 7);
+                const int middleTopRightStar = GetZ(13, 7);
+                const int middleBottomLeftStar = GetZ(7, 13);
+                const int middleBottomRightStar = GetZ(13, 13);
+                //
                 // 天元が空いていたら天元に打ちます（目に打たないように適当に右隣も空であることを確認します）
                 if (position.Board[centerStarZ] == 0 && position.Board[centerStarZ + 1] == 0) {
                     z = centerStarZ;
@@ -530,15 +536,33 @@ void GtpLoop()
                 else if (position.Board[leftStar] == 0 && position.Board[leftStar + 1] == 0) {
                     z = leftStar;
                 }
+                // 中段の右上の星
+                else if (position.Board[middleTopRightStar] == 0 && position.Board[middleTopRightStar + 1] == 0) {
+                    z = middleTopRightStar;
+                }
+                // 中段の左下の星
+                else if (position.Board[middleBottomLeftStar] == 0 && position.Board[middleBottomLeftStar + 1] == 0) {
+                    z = middleBottomLeftStar;
+                }
+                // 中段の左上の星
+                else if (position.Board[middleTopLeftStar] == 0 && position.Board[middleTopLeftStar + 1] == 0) {
+                    z = middleTopLeftStar;
+                }
+                // 中段の右下の星
+                else if (position.Board[middleBottomRightStar] == 0 && position.Board[middleBottomRightStar + 1] == 0) {
+                    z = middleBottomRightStar;
+                }
             }
 
             if (z == 0) {
                 // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
-                if (0 == Rand64() % 4) // search == kSearchUct
-                {
+                // Takahashi: ２つ使うと石の上に石置くかも？
+                //if (0 == Rand64() % 4) // search == kSearchUct
+                //{
                     // UCTを使ったゲームプレイ
-                    std::cerr << "Use uct." << std::endl;
-                    z = uct.GetBestUct(position, color);
+                std::cerr << "Use uct." << std::endl;
+                z = uct.GetBestUct(position, color);
+                /*
                 }
                 else
                 {
@@ -547,6 +571,7 @@ void GtpLoop()
                     std::cerr << "Use primitive monte calro." << std::endl;
                     z = position.PrimitiveMonteCalro(color);
                 }
+                */
             }
 
             // 盤領域を表示？
