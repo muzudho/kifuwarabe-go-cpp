@@ -203,4 +203,13 @@ public:
     /// <param name="color"></param>
     /// <param name="z"></param>
     void SetUpExpendTime(int color, int z);
+
+    /// <summary>
+    /// 現図をバックアップ
+    /// </summary>
+    void BackupCurrent(int* board_copy, int* ko_z_copy);
+    /// <summary>
+    /// 現図をレストア
+    /// </summary>
+    void RestoreCurrent(int* board_copy, int* ko_z_copy);
 };

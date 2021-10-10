@@ -565,3 +565,13 @@ void Position::SetUpExpendTime(int color, int z) {
     // 指し手を棋譜に記憶します
     AddMoves(z, color, sec);
 }
+
+void Position::BackupCurrent(int* board_copy, int* pKo_z_copy) {
+    *pKo_z_copy = ko_z;
+    memcpy(board_copy, Board, sizeof(Board));
+}
+
+void Position::RestoreCurrent(int* board_copy, int* pKo_z_copy) {
+    ko_z = *pKo_z_copy;
+    memcpy(Board, board_copy, sizeof(Board));
+}

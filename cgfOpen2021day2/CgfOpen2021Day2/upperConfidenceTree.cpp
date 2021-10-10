@@ -1,7 +1,7 @@
 ﻿#include "upperConfidenceTree.h"
 #include <iostream>
 
-void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, double win)
+void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, double win)
 {
     // 盤面の各交点の手番の色？
     int played_color[kBoardMax];
@@ -41,7 +41,7 @@ void UpperConfidenceTree::UpdateRave(Node *pN, int color, int current_depth, dou
     for (i = 0; i < pN->child_num; i++)
     {
         // 子ノード
-        Child *c = &pN->children[i];
+        Child* c = &pN->children[i];
 
         // 非合法手は無視
         if (c->z == kIllegalZ) {
@@ -244,8 +244,9 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
     int prev_z = 0;
 
     // 初手以外は前回の着手点を記憶
-    if (position.moves > 0)
+    if (position.moves > 0) {
         prev_z = position.record[position.moves - 1];
+    }
 
     // ノードリストの要素数
     node_num = 0;
@@ -258,8 +259,9 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
     {
         // 現図を退避
         int board_copy[kBoardMax];
-        int ko_z_copy = position.ko_z;
-        memcpy(board_copy, position.Board, sizeof(position.Board));
+        int ko_z_copy;
+
+        position.BackupCurrent(board_copy, &ko_z_copy);
 
         // 経路の深さを初期化
         depth = 0;
@@ -268,8 +270,7 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
         SearchUct(position, color, next);
 
         // 現図を復元
-        position.ko_z = ko_z_copy;
-        memcpy(position.Board, board_copy, sizeof(position.Board));
+        position.RestoreCurrent(board_copy, &ko_z_copy);
 
         // 時間切れなら抜けます
         if (timeMan.IsTimeOver())
@@ -299,7 +300,7 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
             << ",rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
             << ",g=" << std::setw(4) << c->rave_games << std::endl;
 #endif
-    }
+        }
 
     // ベストなノードの座標
     best_z = pN->children[best_i].z;
@@ -312,4 +313,4 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
 #endif
 
     return best_z;
-}
+    }
