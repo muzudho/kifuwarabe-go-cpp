@@ -557,21 +557,22 @@ void GtpLoop()
             if (z == 0) {
                 // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
                 // Takahashi: ２つ使うと石の上に石置くかも？
+                // Takahashi: UCT使うと石の上に石を置いた
+                /*
                 //if (0 == Rand64() % 4) // search == kSearchUct
                 //{
                     // UCTを使ったゲームプレイ
                 std::cerr << "Use uct." << std::endl;
                 z = uct.GetBestUct(position, color);
-                /*
                 }
                 else
                 {
-                    // 原始モンテカルロでも２３秒ぐらいかかってしまう
-                    // 原始モンテカルロでゲームプレイ
-                    std::cerr << "Use primitive monte calro." << std::endl;
-                    z = position.PrimitiveMonteCalro(color);
-                }
                 */
+                // 原始モンテカルロでも２３秒ぐらいかかってしまう
+                // 原始モンテカルロでゲームプレイ
+                std::cerr << "Use primitive monte calro." << std::endl;
+                z = position.PrimitiveMonteCalro(color);
+                //}
             }
 
             // 盤領域を表示？
