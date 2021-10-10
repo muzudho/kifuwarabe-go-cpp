@@ -469,25 +469,30 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
         }
 
         // もし隣に自分の色の石があっても、その石の呼吸点が２以上あればセーフ
-        if (c == color && liberty >= 2)
+        if (c == color && liberty >= 2) {
             mycol_safe++;
+        }
     }
 
     // 石を取っておらず、隣に空点がなく、隣に呼吸点が２つ以上空いている自分の石もないなら、自殺手
-    if (capture_sum == 0 && space == 0 && mycol_safe == 0)
+    if (capture_sum == 0 && space == 0 && mycol_safe == 0) {
         return 1; // suicide
+    }
 
     // もし、コウの座標に石を置こうとしたら、コウ
-    if (tz == ko_z)
+    if (tz == ko_z) {
         return 2; // ko
+    }
 
     // もし、目の座標に石を置こうとしたら、目潰し
-    if (wall + mycol_safe == 4 && fill_eye_err)
+    if (wall + mycol_safe == 4 && fill_eye_err) {
         return 3; // eye
+    }
 
     // もし、石の上に石を置こうとしたら、反則手
-    if (Board[tz] != 0)
+    if (Board[tz] != 0) {
         return 4;
+    }
 
     // 取れる相手の石を取ります
     for (i = 0; i < 4; i++)
