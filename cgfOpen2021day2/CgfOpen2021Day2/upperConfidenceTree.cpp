@@ -1,8 +1,6 @@
 ﻿#include "upperConfidenceTree.h"
 #include <iostream>
 
-extern Position position;
-
 void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, double win)
 {
     // 盤面の各交点の手番の色？
@@ -301,7 +299,7 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
             << ",rave_r=" << std::setw(6) << std::setprecision(3) << c->rave_rate
             << ",g=" << std::setw(4) << c->rave_games << std::endl;
 #endif
-    }
+        }
 
     // ベストなノードの座標
     best_z = pN->children[best_i].z;
@@ -314,82 +312,4 @@ int UpperConfidenceTree::GetBestUct(Position position, int color)
 #endif
 
     return best_z;
-}
-
-
-/// <summary>
-/// create new node.
-/// 空点を全部追加。
-/// PASSも追加。
-/// </summary>
-/// <param name="prev_z">前回の着手の座標</param>
-/// <returns>ノードのリストのインデックス。作られたノードを指す。最初は0から</returns>
-int UpperConfidenceTree::CreateNode(int prev_z)
-{
-    // 筋
-    int x;
-
-    // 段
-    int y;
-
-    // 着手点
-    int z;
-
-    // ループ カウンター
-    int i, j;
-
-    // この局面
-    Node* pN;
-
-    // これ以上増やせません
-    if (node_num == kNodeMax)
-    {
-        std::cerr << "nodeList over Err" << std::endl;
-        exit(0);
     }
-
-    // 末尾の未使用の要素
-    pN = &nodeList[node_num];
-    pN->child_num = 0;
-    pN->child_games_sum = 0;
-    pN->child_rave_games_sum = 0;
-
-    // 空点をリストの末尾に追加
-    for (y = 0; y < kBoardSize; y++) {
-        for (x = 0; x < kBoardSize; x++)
-        {
-            z = GetZ(x + 1, y + 1);
-            if (position.Board[z] != 0)
-                continue;
-            pN->AddChild(z, 0);
-        }
-    }
-    pN->AddChild(0, 0); // add PASS
-
-    // sort children
-    for (i = 0; i < pN->child_num - 1; i++)
-    {
-        double max_b = pN->children[i].bonus;
-        int max_i = i;
-        Child tmp;
-        for (j = i + 1; j < pN->child_num; j++)
-        {
-            Child* c = &pN->children[j];
-            if (max_b >= c->bonus)
-                continue;
-            max_b = c->bonus;
-            max_i = j;
-        }
-        if (max_i == i)
-            continue;
-        tmp = pN->children[i];
-        pN->children[i] = pN->children[max_i];
-        pN->children[max_i] = tmp;
-    }
-
-    // 末尾に１つ追加した分、リストのサイズ１つ追加
-    node_num++;
-
-    // 最後の要素を指すインデックスを返します
-    return node_num - 1;
-}
