@@ -52,7 +52,7 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
         }
 
         // 相手の色なら無視
-        if (player_color_board.played_color[c->z] != color) {
+        if (player_color_board.GetColor(c->z) != color) {
             continue;
         }
 

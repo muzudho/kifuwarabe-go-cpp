@@ -20,4 +20,6 @@ public:
     bool IsEmpty(int z);
 
     void SetColor(int z, int color);
+
+    int GetColor(int z);
 };

@@ -7,3 +7,7 @@ bool PlayerColorBoard::IsEmpty(int z) {
 void PlayerColorBoard::SetColor(int z, int color) {
     played_color[z] = color;
 }
+
+int PlayerColorBoard::GetColor(int z) {
+    return played_color[z];
+}
