@@ -43,53 +43,6 @@ int path[kDMax];
 int depth;
 
 /// <summary>
-/// count_liberty関数の中で呼び出されます。再帰
-/// </summary>
-/// <param name="tz">着手（開始）座標</param>
-/// <param name="color">連の色</param>
-/// <param name="p_liberty">呼吸点の数</param>
-/// <param name="p_stone">連の石の数</param>
-void Position::CountLibertySub(int tz, int color, int* p_liberty, int* p_stone)
-{
-    // 着手点
-    int z;
-
-    // ループ カウンター
-    int i;
-
-    check_board[tz] = 1; // search flag
-    (*p_stone)++;        // number of stone
-    for (i = 0; i < 4; i++)
-    {
-        z = tz + kDir4[i];
-        if (check_board[z])
-            continue;
-        if (Board[z] == 0)
-        {
-            check_board[z] = 1;
-            (*p_liberty)++; // number of liberty
-        }
-        if (Board[z] == color)
-            CountLibertySub(z, color, p_liberty, p_stone);
-    }
-}
-
-/// <summary>
-/// 呼吸点の数
-/// </summary>
-/// <param name="tz">着手座標</param>
-/// <param name="p_liberty">呼吸点の数</param>
-/// <param name="p_stone">連の石の数</param>
-void Position::CountLiberty(int tz, int* p_liberty, int* p_stone)
-{
-    int i;
-    *p_liberty = *p_stone = 0;
-    for (i = 0; i < kBoardMax; i++)
-        check_board[i] = 0;
-    CountLibertySub(tz, Board[tz], p_liberty, p_stone);
-}
-
-/// <summary>
 /// プレイアウトします
 /// </summary>
 /// <param name="turn_color">手番の石の色</param>
@@ -211,8 +164,10 @@ int Position::Playout(int turn_color)
 /// <returns>最善手の座標</returns>
 int Position::PrimitiveMonteCalro(int color)
 {
+    // Takahashi: 消費時間を短縮したい。でも6秒だとペンキ塗りしてしまう。
+    // Takahashi: 8でちょうどいいかと思ったが、石の上に石を置いたかもしれないので、もう少し長めに 10 にする。
     // number of playout
-    int try_num = 30;
+    int try_num = 10; // 30;
 
     // 最善手の着手点
     int best_z = 0;
@@ -261,13 +216,15 @@ int Position::PrimitiveMonteCalro(int color)
             int z = GetZ(x + 1, y + 1);
 
             // 空点でなければ無視
-            if (Board[z] != 0)
+            if (Board[z] != 0) {
                 continue;
+            }
 
             // 目潰ししないように石を置く
             err = PutStone(z, color, kFillEyeErr);
-            if (err != 0)
+            if (err != 0) {
                 continue;
+            }
 
             // 勝った回数
             win_sum = 0;
@@ -527,7 +484,7 @@ void GtpLoop()
 
             // 着手点
             int z = 0;
-            if(kBoardSize == 19) {
+            if (kBoardSize == 19) {
                 const int topLeftStar = GetZ(4, 4);
                 const int topStar = GetZ(10, 4);
                 const int topRightStar = GetZ(16, 4);
@@ -577,14 +534,17 @@ void GtpLoop()
 
             if (z == 0) {
                 // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
-                if (0 == Rand64() % 2) // search == kSearchUct
+                if (0 == Rand64() % 4) // search == kSearchUct
                 {
                     // UCTを使ったゲームプレイ
+                    std::cerr << "Use uct." << std::endl;
                     z = uct.GetBestUct(position, color);
                 }
                 else
                 {
+                    // 原始モンテカルロでも２３秒ぐらいかかってしまう
                     // 原始モンテカルロでゲームプレイ
+                    std::cerr << "Use primitive monte calro." << std::endl;
                     z = position.PrimitiveMonteCalro(color);
                 }
             }

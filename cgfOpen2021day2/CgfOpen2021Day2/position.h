@@ -4,6 +4,7 @@
 #include "common.h"
 #include "hashCode.h"
 #include "go15.h"
+#include "liberty.h"
 
 /// <summary>
 /// 右、下、左、上
@@ -143,9 +144,6 @@ public:
     /// 致命さをエラー出力へ出力？
     /// </summary>
     void PrintCriticality();
-
-    void CountLibertySub(int tz, int color, int *p_liberty, int *p_stone);
-    void CountLiberty(int tz, int *p_liberty, int *p_stone);
 
     /// <summary>
     /// 石を取り上げます

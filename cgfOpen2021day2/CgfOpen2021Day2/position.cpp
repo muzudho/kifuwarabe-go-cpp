@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 
+extern Liberty libertyClass;
+
 /// <summary>
 /// 盤の初期化
 /// </summary>
@@ -448,7 +450,7 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
             continue;
 
         // 呼吸点の数と、連の石の数を数えます
-        CountLiberty(z, &liberty, &stone);
+        libertyClass.CountLiberty(z, &liberty, &stone);
 
         // 隣の石が相手の色で、呼吸点が1なら、その石を取れます
         around[i][0] = liberty;
@@ -508,7 +510,7 @@ int Position::PutStone(int tz, int color, int fill_eye_err)
         hashCode.HashXor(ko_z, kHashKo);
 
     // 着手点を含む連の呼吸点の数を数えます
-    CountLiberty(tz, &liberty, &stone);
+    libertyClass.CountLiberty(tz, &liberty, &stone);
 
     // 石を1個取ったらコウかも知れない
     if (capture_sum == 1 && stone == 1 && liberty == 1)
