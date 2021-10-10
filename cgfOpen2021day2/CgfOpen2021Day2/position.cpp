@@ -3,7 +3,7 @@
 #include <iomanip>
 
 extern Liberty libertyClass;
-extern int* path;
+extern int path[kDMax];
 
 /// <summary>
 /// 盤の初期化

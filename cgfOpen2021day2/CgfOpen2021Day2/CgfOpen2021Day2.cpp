@@ -180,6 +180,7 @@ void GtpLoop()
 
             // 着手点
             int z = 0;
+            /* 大会用
             if (kBoardSize == 19) {
                 const int topLeftStar = GetZ(4, 4);
                 const int topStar = GetZ(10, 4);
@@ -291,6 +292,7 @@ void GtpLoop()
                     z = pattern_step8;
                 }
             }
+            */
 
             if (z == 0) {
                 // Takahashi: UCT と 原始モンテカルロを乱数で切り替えます
