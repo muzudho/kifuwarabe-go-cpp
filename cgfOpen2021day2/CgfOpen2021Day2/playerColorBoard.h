@@ -7,10 +7,6 @@
 /// </summary>
 class PlayerColorBoard {
 public:
-    /// <summary>
-    /// 
-    /// </summary>
-    int played_color[kBoardMax] = {0};
 
     /// <summary>
     /// 空点か？
@@ -22,4 +18,12 @@ public:
     void SetColor(int z, int color);
 
     int GetColor(int z);
+
+private:
+
+    /// <summary>
+    /// 
+    /// </summary>
+    int _played_color[kBoardMax] = { 0 };
+
 };

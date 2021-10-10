@@ -17,9 +17,9 @@ void UpperConfidenceTree::UpdateRave(Node* pN, int color, int current_depth, dou
 
     // 盤面の各交点の手番の色？
     PlayerColorBoard player_color_board = PlayerColorBoard();
-    // int played_color[kBoardMax];
+    // int _played_color[kBoardMax];
     // ゼロ クリアーした？
-    // memset(player_color_board.played_color, 0, sizeof(player_color_board.played_color));
+    // memset(player_color_board._played_color, 0, sizeof(player_color_board._played_color));
 
     // 経路の残りの負荷さについて
     for (i = current_depth; i < depth; i++)

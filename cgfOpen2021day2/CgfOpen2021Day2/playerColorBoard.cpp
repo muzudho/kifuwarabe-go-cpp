@@ -1,13 +1,13 @@
 #include "playerColorBoard.h"
 
 bool PlayerColorBoard::IsEmpty(int z) {
-    return played_color[z] == 0;
+    return _played_color[z] == 0;
 }
 
 void PlayerColorBoard::SetColor(int z, int color) {
-    played_color[z] = color;
+    _played_color[z] = color;
 }
 
 int PlayerColorBoard::GetColor(int z) {
-    return played_color[z];
+    return _played_color[z];
 }
